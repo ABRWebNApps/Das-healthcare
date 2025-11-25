@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import ContactForm from "./FormContact";
 
 export default function ContactHero() {
   const [show, setShow] = useState(false);

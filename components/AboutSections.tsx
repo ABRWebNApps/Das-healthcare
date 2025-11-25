@@ -1,12 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  HeartHandshake,
-  Target,
-  ShieldCheck,
-} from "lucide-react";
+import { HeartHandshake, Target, ShieldCheck } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -14,24 +9,21 @@ const cards = [
   {
     title: "Our Mission",
     icon: <HeartHandshake size={20} className="text-white" />,
-    full:
-      "Our mission is to provide the most vulnerable members of our community with empathetic and compassionate care in the comfort and secure surroundings of their own home.",
+    full: "Our mission is to provide the most vulnerable members of our community with empathetic and compassionate care in the comfort and secure surroundings of their own home.",
     bg: "/Card.jpg",
     overlay: "bg-blue-600/40",
   },
   {
     title: "Our Aims & Objectives",
     icon: <Target size={20} className="text-white" />,
-    full:
-      "• Provide domiciliary care services for daily tasks.\n• Deliver high-quality, person-centred care.\n• Be forward-thinking and innovative.\n• Raise standards within the care sector.\n• Promote dignity, respect, and equal opportunities.\n• Ensure financial viability.",
+    full: "• Provide domiciliary care services for daily tasks.\n• Deliver high-quality, person-centred care.\n• Be forward-thinking and innovative.\n• Raise standards within the care sector.\n• Promote dignity, respect, and equal opportunities.\n• Ensure financial viability.",
     bg: "/Card2.jpg",
     overlay: "bg-red-400/40",
   },
   {
     title: "Our Core Values",
     icon: <ShieldCheck size={20} className="text-white" />,
-    full:
-      "• Measurable quality outcomes.\n• A culture of inclusion and support.\n• Agility and resilience.\n• Integrity and transparency.\n• Tailored care for each individual.",
+    full: "• Measurable quality outcomes.\n• A culture of inclusion and support.\n• Agility and resilience.\n• Integrity and transparency.\n• Tailored care for each individual.",
     bg: "/Card-3.jpg",
     overlay: "bg-orange-600/40",
   },
@@ -52,7 +44,8 @@ export default function AboutSection() {
           Building Compassionate Care Together
         </h2>
         <p className="text-gray-800 max-w-2xl mx-auto mt-3 text-lg">
-          At DAS Healthcare, we empower individuals through quality, dignity and heartfelt support.
+          At DAS Healthcare, we empower individuals through quality, dignity and
+          heartfelt support.
         </p>
       </motion.div>
 
@@ -75,7 +68,9 @@ export default function AboutSection() {
                   style={{ backgroundImage: `url(${card.bg})` }}
                 />
 
-                <div className={`absolute inset-0 ${card.overlay} backdrop-blur-sm`} />
+                <div
+                  className={`absolute inset-0 ${card.overlay} backdrop-blur-sm`}
+                />
 
                 {/* Content */}
                 <div className="relative z-10 p-6 text-white">
@@ -114,14 +109,14 @@ export default function AboutSection() {
               style={{ backgroundImage: `url(${card.bg})` }}
             />
 
-            <div className={`absolute inset-0 ${card.overlay} backdrop-blur-sm`} />
+            <div
+              className={`absolute inset-0 ${card.overlay} backdrop-blur-sm`}
+            />
 
             {/* Content */}
             <div className="relative z-10 p-6 text-white">
               <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-full bg-black/40">
-                  {card.icon}
-                </div>
+                <div className="p-2 rounded-full bg-black/40">{card.icon}</div>
                 <h3 className="text-lg font-semibold">{card.title}</h3>
               </div>
 

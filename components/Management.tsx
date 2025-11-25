@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface TeamMemberProps {
   name: string;
@@ -11,14 +11,20 @@ interface TeamMemberProps {
   shortBio: string;
 }
 
-const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, shortBio }) => {
+const TeamMember: React.FC<TeamMemberProps> = ({
+  name,
+  role,
+  image,
+  bio,
+  shortBio,
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
   // Get initials for fallback
-  const getInitials = (name) => {
-    const names = name.split(' ');
+  const getInitials = (name: string) => {
+    const names = name.split(" ");
     if (names.length === 1) return names[0].charAt(0);
     return names[0].charAt(0) + names[1].charAt(0);
   };
@@ -41,7 +47,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, shortBi
 
           {!imageError ? (
             <Image
-              src={image.startsWith('/') ? image : `/${image}`}  // Ensure path starts with /
+              src={image.startsWith("/") ? image : `/${image}`} // Ensure path starts with /
               alt={name}
               fill
               className="object-cover"
@@ -59,14 +65,19 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, shortBi
           )}
         </div>
         <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-1 text-center">{name}</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-1 text-center">
+            {name}
+          </h3>
           <p className="text-gray-600 text-sm mb-4 text-center">{role}</p>
 
           <p className="text-gray-600 text-sm mb-4">{shortBio}</p>
 
           <motion.div
             initial={false}
-            animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
+            animate={{
+              height: expanded ? "auto" : 0,
+              opacity: expanded ? 1 : 0,
+            }}
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
@@ -79,11 +90,11 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, bio, shortBi
             onClick={() => setExpanded(!expanded)}
             className={`w-full py-2 px-4 rounded-full font-medium transition-colors duration-300 ${
               expanded
-                ? 'text-blue-600 border border-blue-400 bg-transparent hover:bg-blue-50'
-                : 'bg-blue-300 text-white hover:bg-blue-400'
+                ? "text-blue-600 border border-blue-400 bg-transparent hover:bg-blue-50"
+                : "bg-blue-300 text-white hover:bg-blue-400"
             }`}
           >
-            {expanded ? 'Show Less' : 'Read More'}
+            {expanded ? "Show Less" : "Read More"}
           </motion.button>
         </div>
       </div>
@@ -96,17 +107,19 @@ const MeetOurTeam = () => {
     {
       name: "Olajide Bankole, RN, DHM",
       role: "Co-Founder, Director of Care & Registered Manager",
-      image: "olajide-bankole.jpg",  // Path relative to public folder
-      shortBio: "Highly skilled Acute and Critical Care Nurse with over 30 years of experience in national and international healthcare services.",
-      bio: "Highly skilled and experienced Acute and Critical Care Nurse with over 30 years of national (NHS and Private Hospitals across England) and international service. Obtained education in LSSN, Lagos Nigeria, Olabisi Onabanjo University, formerly Ogun State University, Nigeria, Yishak Rabin Trauma Centre, Tel-Aviv, University of Israel, Kings College University of London, Edinburgh Napier University, Scotland, University of Oxford, UK. Clinical Educator/Trainer, Project Manager with WHO Consultancy Experience (COVID-19 Pandemic Response, Botswana)."
+      image: "olajide-bankole.jpg", // Path relative to public folder
+      shortBio:
+        "Highly skilled Acute and Critical Care Nurse with over 30 years of experience in national and international healthcare services.",
+      bio: "Highly skilled and experienced Acute and Critical Care Nurse with over 30 years of national (NHS and Private Hospitals across England) and international service. Obtained education in LSSN, Lagos Nigeria, Olabisi Onabanjo University, formerly Ogun State University, Nigeria, Yishak Rabin Trauma Centre, Tel-Aviv, University of Israel, Kings College University of London, Edinburgh Napier University, Scotland, University of Oxford, UK. Clinical Educator/Trainer, Project Manager with WHO Consultancy Experience (COVID-19 Pandemic Response, Botswana).",
     },
     {
       name: "Olutoyin Bankole",
       role: "Co-Founder & Director",
-      image: "/Olutoyin Bankole.jpg",  // Path relative to public folder
-      shortBio: "Co-Founder with nearly two decades of experience in quality management and compliance in healthcare.",
-      bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organized and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specializes in Qualities Management and Compliance, Team Building and Development."
-    }
+      image: "/Olutoyin Bankole.jpg", // Path relative to public folder
+      shortBio:
+        "Co-Founder with nearly two decades of experience in quality management and compliance in healthcare.",
+      bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organized and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specializes in Qualities Management and Compliance, Team Building and Development.",
+    },
   ];
 
   return (
@@ -130,15 +143,13 @@ const MeetOurTeam = () => {
           className="text-gray-700 text-center mb-12 max-w-4xl mx-auto"
         >
           Our management team brings together decades of healthcare experience
-          <br/> with a shared vision of providing compassionate, high-quality care.
+          <br /> with a shared vision of providing compassionate, high-quality
+          care.
         </motion.p>
 
         <div className="flex flex-wrap justify-center -mx-4">
           {teamMembers.map((member, index) => (
-            <TeamMember
-              key={index}
-              {...member}
-            />
+            <TeamMember key={index} {...member} />
           ))}
         </div>
       </div>

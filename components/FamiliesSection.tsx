@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import { motion, LazyMotion, domAnimation, m } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 
 type Testimonial = {
   quote: string;

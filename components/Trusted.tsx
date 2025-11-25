@@ -1,6 +1,6 @@
 "use client";
-import React, { useRef } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import React, { useRef } from "react";
+import { motion, useInView, useAnimation } from "framer-motion";
 
 const Trusted = () => {
   const ref = useRef(null);
@@ -20,9 +20,9 @@ const Trusted = () => {
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
@@ -31,9 +31,9 @@ const Trusted = () => {
         ref={ref}
         initial="hidden"
         animate={controls}
-        variants={containerVariants}
+        variants={containerVariants as any}
         className="bg-white rounded-lg shadow-lg p-8 text-center w-full max-w-2xl"
-        style={{ border: '1px solid rgba(0, 0, 0, 0.08)' }}
+        style={{ border: "1px solid rgba(0, 0, 0, 0.08)" }}
       >
         <h3 className="text-2xl font-semibold text-gray-800 mb-6">
           Registered & Trusted

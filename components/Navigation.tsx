@@ -3,15 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [pathname, setPathname] = useState<string | null>(null);
+  const pathnameFromHook = usePathname();
+
+  // Prevent hydration mismatch by setting pathname only on client
+  useEffect(() => {
+    setPathname(pathnameFromHook);
+  }, [pathnameFromHook]);
 
   return (
-    <nav className="w-full flex flex-col bg-sky-50 shadow-sm">
+    <nav className="w-full flex flex-col bg-sky-50 shadow-sm" suppressHydrationWarning>
       <div className="flex items-center justify-between px-8 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2">

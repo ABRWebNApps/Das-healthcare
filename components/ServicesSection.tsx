@@ -6,7 +6,6 @@ import {
   UserCheck,
   Globe,
   Brain,
-  Stethoscope,
   User,
   Lightbulb,
   Heart,
@@ -68,13 +67,13 @@ const services: Service[] = [
     icon: Heart,
     img: "/centered-support.jpg",
   },
-   {
+  {
     title: "Domiciliary Services",
     description:
       "We bring quality medical care to your home. Our team provides check-ups, medication support, wound care, and continous monitoring in the comfort of your own space.",
     icon: Home,
     img: "/domicilary.jpg",
-  },    
+  },
   {
     title: "Daily Living Assistance",
     description:
@@ -147,7 +146,10 @@ export default function ServicesSection() {
                 {/* Content Section */}
                 <div className="p-5 text-left min-h-[160px] flex flex-col justify-start">
                   <div className="flex items-start gap-3 mb-2.5">
-                    <Icon className="h-5 w-5 text-[#0091FF] mt-0.5" strokeWidth={1.5} />
+                    <Icon
+                      className="h-5 w-5 text-[#0091FF] mt-0.5"
+                      strokeWidth={1.5}
+                    />
                     <h3 className="text-[15px] font-semibold text-[#111827] leading-tight">
                       {service.title}
                     </h3>
