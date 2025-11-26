@@ -1,3 +1,14 @@
+export interface ApplicationField {
+  id: string;
+  type: "text" | "textarea" | "file" | "select" | "checkbox";
+  label: string;
+  required: boolean;
+  placeholder?: string;
+  options?: string[]; // For select type
+  accept?: string; // For file type (e.g., ".pdf,.doc")
+  maxFiles?: number; // For file type
+}
+
 export interface JobPost {
   id: string;
   title: string;
@@ -10,6 +21,7 @@ export interface JobPost {
   responsibilities: string[];
   application_link?: string;
   salary_range?: string;
+  application_fields?: ApplicationField[]; // Custom application form fields
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -51,6 +63,7 @@ export interface JobApplication {
   applicant_phone: string;
   cover_letter?: string;
   files: string[];
+  custom_responses?: Record<string, any>; // Store custom field responses
   status: "pending" | "reviewed" | "approved" | "declined";
   admin_notes?: string;
   created_at: string;

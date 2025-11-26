@@ -5,8 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { JobPost } from "@/lib/supabase/types";
 import Navbar from "@/components/Navigation";
+import DynamicApplicationForm from "@/components/DynamicApplicationForm";
 import Link from "next/link";
-import { ArrowLeft, Upload, X, File, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, User, Mail, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function JobApplyPage() {
@@ -17,13 +18,10 @@ export default function JobApplyPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
-  const [formData, setFormData] = useState({
+  const [standardFormData, setStandardFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    cover_letter: "",
   });
 
   useEffect(() => {
@@ -48,74 +46,64 @@ export default function JobApplyPage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setFiles((prev) => [...prev, ...newFiles]);
-    }
-  };
-
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const uploadFile = async (file: File, jobId: string): Promise<string> => {
+  const uploadFile = async (file: File, jobId: string, fieldId: string): Promise<string> => {
     const fileExt = file.name.split(".").pop();
-    const fileName = `${jobId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-    const filePath = fileName;
+    const fileName = `${jobId}/${fieldId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
 
     const { data, error } = await supabase.storage
       .from("applications")
-      .upload(filePath, file, {
+      .upload(fileName, file, {
         cacheControl: "3600",
         upsert: false,
       });
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
-    const { data: urlData } = supabase.storage
-      .from("applications")
-      .getPublicUrl(filePath);
-    
+    const { data: urlData } = supabase.storage.from("applications").getPublicUrl(fileName);
     return urlData.publicUrl;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!job || files.length === 0) {
-      alert("Please upload at least one file (CV/Resume)");
+  const handleSubmit = async (
+    customData: Record<string, any>,
+    customFiles: Record<string, File[]>
+  ) => {
+    if (!job) return;
+
+    // Validate standard fields
+    if (!standardFormData.name || !standardFormData.email || !standardFormData.phone) {
+      alert("Please fill in all required fields (Name, Email, Phone)");
       return;
     }
 
     setSubmitting(true);
 
     try {
-      // Upload files
-      const uploadedUrls: string[] = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        setUploadProgress((prev) => ({ ...prev, [file.name]: 0 }));
-        
-        try {
-          const url = await uploadFile(file, job.id);
-          uploadedUrls.push(url);
-          setUploadProgress((prev) => ({ ...prev, [file.name]: 100 }));
-        } catch (error) {
-          console.error(`Error uploading ${file.name}:`, error);
-          throw new Error(`Failed to upload ${file.name}`);
+      // Upload all files from custom fields
+      const allFileUrls: string[] = [];
+      const customResponses: Record<string, any> = { ...customData };
+
+      for (const [fieldId, fieldFiles] of Object.entries(customFiles)) {
+        if (fieldFiles && fieldFiles.length > 0) {
+          const uploadedUrls: string[] = [];
+          for (const file of fieldFiles) {
+            const url = await uploadFile(file, job.id, fieldId);
+            uploadedUrls.push(url);
+            allFileUrls.push(url);
+          }
+          // Store file URLs in custom responses
+          customResponses[fieldId] = uploadedUrls;
         }
       }
 
       // Create application record
       const { error } = await supabase.from("job_applications").insert({
         job_id: job.id,
-        applicant_name: formData.name,
-        applicant_email: formData.email,
-        applicant_phone: formData.phone,
-        cover_letter: formData.cover_letter || null,
-        files: uploadedUrls,
+        job_title: job.title,
+        applicant_name: standardFormData.name,
+        applicant_email: standardFormData.email,
+        applicant_phone: standardFormData.phone,
+        files: allFileUrls,
+        custom_responses: Object.keys(customResponses).length > 0 ? customResponses : null,
         status: "pending",
       });
 
@@ -175,11 +163,10 @@ export default function JobApplyPage() {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="text-green-600" size={48} />
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Application Submitted!
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h2>
             <p className="text-gray-600 mb-6">
-              Thank you for applying to {job.title}. We'll review your application and get back to you soon.
+              Thank you for applying to {job.title}. We'll review your application and get back to
+              you soon.
             </p>
             <Link
               href={`/careers/${slug}`}
@@ -206,144 +193,117 @@ export default function JobApplyPage() {
           Back to Job Details
         </Link>
 
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white rounded-xl shadow-lg p-8"
+        >
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Apply for {job.title}</h1>
-          <p className="text-gray-600 mb-8">{job.department} • {job.location}</p>
+          <p className="text-gray-600 mb-8">
+            {job.department} • {job.location} • {job.type}
+          </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
-                  placeholder="+44 20 1234 5678"
-                />
-              </div>
-            </div>
-
+          <div className="space-y-8">
+            {/* Standard Fields */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cover Letter (Optional)
-              </label>
-              <textarea
-                rows={6}
-                value={formData.cover_letter}
-                onChange={(e) => setFormData({ ...formData, cover_letter: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
-                placeholder="Tell us why you're interested in this position..."
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Upload Documents * (CV, Resume, Certificates, etc.)
-              </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors">
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx,.txt"
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer flex flex-col items-center justify-center"
-                >
-                  <Upload className="text-gray-400 mb-2" size={32} />
-                  <span className="text-sm text-gray-600 mb-1">
-                    Click to upload or drag and drop
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    PDF, DOC, DOCX, TXT (Max 10MB per file)
-                  </span>
-                </label>
-              </div>
-
-              {files.length > 0 && (
-                <div className="mt-4 space-y-2">
-                  {files.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        <File className="text-blue-600" size={20} />
-                        <span className="text-sm text-gray-700">{file.name}</span>
-                        <span className="text-xs text-gray-500">
-                          ({(file.size / 1024 / 1024).toFixed(2)} MB)
-                        </span>
-                      </div>
-                      {uploadProgress[file.name] === 100 ? (
-                        <CheckCircle className="text-green-600" size={20} />
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => removeFile(index)}
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <X size={20} />
-                        </button>
-                      )}
-                    </div>
-                  ))}
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      type="text"
+                      required
+                      value={standardFormData.name}
+                      onChange={(e) =>
+                        setStandardFormData({ ...standardFormData, name: e.target.value })
+                      }
+                      className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                      placeholder="John Doe"
+                    />
+                  </div>
                 </div>
-              )}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      type="email"
+                      required
+                      value={standardFormData.email}
+                      onChange={(e) =>
+                        setStandardFormData({ ...standardFormData, email: e.target.value })
+                      }
+                      className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <input
+                      type="tel"
+                      required
+                      value={standardFormData.phone}
+                      onChange={(e) =>
+                        setStandardFormData({ ...standardFormData, phone: e.target.value })
+                      }
+                      className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                      placeholder="+44 20 1234 5678"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={submitting || files.length === 0}
-              className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {submitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Submitting Application...
-                </>
-              ) : (
-                "Submit Application"
-              )}
-            </button>
-          </form>
-        </div>
+            {/* Dynamic Custom Fields */}
+            {job.application_fields && job.application_fields.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
+                <DynamicApplicationForm
+                  fields={job.application_fields}
+                  onSubmit={handleSubmit}
+                  submitting={submitting}
+                />
+              </div>
+            )}
+
+            {/* If no custom fields, show submit button */}
+            {(!job.application_fields || job.application_fields.length === 0) && (
+              <motion.button
+                onClick={() => handleSubmit({}, {})}
+                disabled={submitting || !standardFormData.name || !standardFormData.email || !standardFormData.phone}
+                whileHover={{ scale: submitting ? 1 : 1.02 }}
+                whileTap={{ scale: submitting ? 1 : 0.98 }}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {submitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    Submit Application
+                    <CheckCircle size={20} />
+                  </>
+                )}
+              </motion.button>
+            )}
+          </div>
+        </motion.div>
       </div>
     </div>
   );
 }
-

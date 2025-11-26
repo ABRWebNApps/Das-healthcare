@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { generateSlug } from "@/lib/utils";
+import { ApplicationField } from "@/lib/supabase/types";
+import FormBuilder from "@/components/FormBuilder";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -18,10 +20,10 @@ export default function NewJobPage() {
     description: "",
     requirements: "",
     responsibilities: "",
-    application_link: "",
     salary_range: "",
     is_active: true,
   });
+  const [applicationFields, setApplicationFields] = useState<ApplicationField[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,7 @@ export default function NewJobPage() {
         slug,
         requirements,
         responsibilities,
+        application_fields: applicationFields.length > 0 ? applicationFields : null,
       });
 
       if (error) throw error;
@@ -139,18 +142,6 @@ export default function NewJobPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Application Link
-            </label>
-            <input
-              type="url"
-              value={formData.application_link}
-              onChange={(e) => setFormData({ ...formData, application_link: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-              placeholder="https://..."
-            />
-          </div>
         </div>
 
         <div>
@@ -193,6 +184,15 @@ export default function NewJobPage() {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
             placeholder="Provide personal care to clients&#10;Support daily living activities&#10;..."
           />
+        </div>
+
+        <div className="border-t border-gray-200 pt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Custom Application Form</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Customize the application form fields for this job. The form will automatically include
+            name, email, and phone fields. Add additional fields as needed.
+          </p>
+          <FormBuilder fields={applicationFields} onChange={setApplicationFields} />
         </div>
 
         <div className="flex items-center gap-2">

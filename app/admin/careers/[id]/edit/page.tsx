@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { generateSlug } from "@/lib/utils";
-import { JobPost } from "@/lib/supabase/types";
+import { JobPost, ApplicationField } from "@/lib/supabase/types";
+import FormBuilder from "@/components/FormBuilder";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -22,10 +23,10 @@ export default function EditJobPage() {
     description: "",
     requirements: "",
     responsibilities: "",
-    application_link: "",
     salary_range: "",
     is_active: true,
   });
+  const [applicationFields, setApplicationFields] = useState<ApplicationField[]>([]);
 
   useEffect(() => {
     fetchJob();
@@ -49,10 +50,10 @@ export default function EditJobPage() {
           description: data.description,
           requirements: data.requirements?.join("\n") || "",
           responsibilities: data.responsibilities?.join("\n") || "",
-          application_link: data.application_link || "",
           salary_range: data.salary_range || "",
           is_active: data.is_active,
         });
+        setApplicationFields(data.application_fields || []);
       }
     } catch (error: any) {
       console.error("Error fetching job:", error);
@@ -83,6 +84,7 @@ export default function EditJobPage() {
           slug,
           requirements,
           responsibilities,
+          application_fields: applicationFields.length > 0 ? applicationFields : null,
           updated_at: new Date().toISOString(),
         })
         .eq("id", jobId);
@@ -188,17 +190,6 @@ export default function EditJobPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Application Link
-            </label>
-            <input
-              type="url"
-              value={formData.application_link}
-              onChange={(e) => setFormData({ ...formData, application_link: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-            />
-          </div>
         </div>
 
         <div>
@@ -238,6 +229,15 @@ export default function EditJobPage() {
             onChange={(e) => setFormData({ ...formData, responsibilities: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
+        </div>
+
+        <div className="border-t border-gray-200 pt-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Custom Application Form</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Customize the application form fields for this job. The form will automatically include
+            name, email, and phone fields. Add additional fields as needed.
+          </p>
+          <FormBuilder fields={applicationFields} onChange={setApplicationFields} />
         </div>
 
         <div className="flex items-center gap-2">

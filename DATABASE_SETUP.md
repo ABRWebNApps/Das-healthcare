@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS jobs (
   responsibilities TEXT[] DEFAULT '{}',
   application_link TEXT,
   salary_range TEXT,
+  application_fields JSONB, -- Custom application form fields configuration
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -68,11 +69,13 @@ CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(appointment_dat
 CREATE TABLE IF NOT EXISTS job_applications (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   job_id UUID NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  job_title TEXT, -- Denormalized for easier querying
   applicant_name TEXT NOT NULL,
   applicant_email TEXT NOT NULL,
   applicant_phone TEXT NOT NULL,
   cover_letter TEXT,
   files TEXT[] DEFAULT '{}',
+  custom_responses JSONB, -- Store responses to custom form fields
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'approved', 'declined')),
   admin_notes TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -81,6 +84,7 @@ CREATE TABLE IF NOT EXISTS job_applications (
 
 CREATE INDEX IF NOT EXISTS idx_applications_job_id ON job_applications(job_id);
 CREATE INDEX IF NOT EXISTS idx_applications_status ON job_applications(status);
+CREATE INDEX IF NOT EXISTS idx_applications_created_at ON job_applications(created_at);
 ```
 
 ### 4. Messages Table

@@ -130,23 +130,12 @@ export default function JobDetailPage() {
           )}
 
           <div className="pt-6 border-t border-gray-200">
-            {job.application_link ? (
-              <a
-                href={job.application_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Apply Now
-              </a>
-            ) : (
-              <Link
-                href={`/careers/${slug}/apply`}
-                className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-              >
-                Apply Now
-              </Link>
-            )}
+            <Link
+              href={`/careers/${slug}/apply`}
+              className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              Apply Now
+            </Link>
           </div>
         </div>
       </div>
