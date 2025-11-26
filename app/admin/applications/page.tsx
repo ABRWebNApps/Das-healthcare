@@ -23,10 +23,16 @@ interface ApplicationWithJob extends JobApplication {
   job?: JobPost;
 }
 
+interface JobOption {
+  id: string;
+  title: string;
+  slug: string;
+}
+
 export default function ApplicationsAdmin() {
   const [applications, setApplications] = useState<ApplicationWithJob[]>([]);
   const [allApplications, setAllApplications] = useState<ApplicationWithJob[]>([]);
-  const [jobs, setJobs] = useState<JobPost[]>([]);
+  const [jobs, setJobs] = useState<JobOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
