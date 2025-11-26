@@ -33,6 +33,7 @@ export default function ModernBookingForm() {
     email: "",
     phone: "",
     reason: "",
+    otherReason: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -58,7 +59,12 @@ export default function ModernBookingForm() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear otherReason when a different reason is selected
+    if (name === "reason" && value !== "Other") {
+      setFormData((prev) => ({ ...prev, reason: value, otherReason: "" }));
+    }
   };
 
   const handleSubmit = async () => {
@@ -68,12 +74,17 @@ export default function ModernBookingForm() {
 
     setSubmitting(true);
     try {
+      // Use otherReason if "Other" is selected, otherwise use the selected reason
+      const finalReason = formData.reason === "Other" 
+        ? formData.otherReason 
+        : formData.reason || "Appointment Booking";
+
       const { error } = await supabase.from("appointments").insert({
         client_name: formData.name,
         client_email: formData.email,
         client_phone: formData.phone,
-        subject: formData.reason || "Appointment Booking",
-        reason: formData.reason,
+        subject: finalReason,
+        reason: finalReason,
         department: "General Inquiry",
         appointment_date: format(selectedDate, "yyyy-MM-dd"),
         appointment_time: selectedTime,
@@ -95,7 +106,7 @@ export default function ModernBookingForm() {
     setCurrentStep("date");
     setSelectedDate(null);
     setSelectedTime("");
-    setFormData({ name: "", email: "", phone: "", reason: "" });
+    setFormData({ name: "", email: "", phone: "", reason: "", otherReason: "" });
     setSuccess(false);
   };
 
@@ -180,26 +191,26 @@ export default function ModernBookingForm() {
                     <p className="text-gray-600">Choose your preferred appointment date</p>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2">
                     {getAvailableDates().map((date, index) => (
                       <motion.button
                         key={index}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleDateSelect(date)}
-                        className={`p-4 rounded-xl border-2 transition-all ${
+                        className={`p-3 rounded-lg border-2 transition-all ${
                           selectedDate && isSameDay(date, selectedDate)
                             ? "border-blue-600 bg-blue-50"
                             : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
                         }`}
                       >
-                        <div className="text-sm font-medium text-gray-600">
+                        <div className="text-xs font-medium text-gray-600">
                           {format(date, "EEE")}
                         </div>
-                        <div className="text-2xl font-bold text-gray-900 mt-1">
+                        <div className="text-lg font-bold text-gray-900 mt-1">
                           {format(date, "d")}
                         </div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-xs text-gray-500 mt-0.5">
                           {format(date, "MMM")}
                         </div>
                       </motion.button>
@@ -348,14 +359,47 @@ export default function ModernBookingForm() {
                         <option>Live-in Care</option>
                         <option>Supported Living</option>
                         <option>General Inquiry</option>
+                        <option>Other</option>
                       </select>
+                      
+                      {/* Show text input when "Other" is selected */}
+                      <AnimatePresence>
+                        {formData.reason === "Other" && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="mt-3"
+                          >
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Please specify your reason *
+                            </label>
+                            <input
+                              type="text"
+                              name="otherReason"
+                              value={formData.otherReason}
+                              onChange={handleInputChange}
+                              required={formData.reason === "Other"}
+                              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
+                              placeholder="Enter your reason for the appointment..."
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
 
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleSubmit}
-                      disabled={submitting || !formData.name || !formData.email || !formData.phone}
+                      disabled={
+                        submitting || 
+                        !formData.name || 
+                        !formData.email || 
+                        !formData.phone ||
+                        (formData.reason === "Other" && !formData.otherReason.trim())
+                      }
                       className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {submitting ? (

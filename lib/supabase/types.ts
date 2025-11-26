@@ -41,3 +41,30 @@ export interface Client {
   last_appointment?: string;
   created_at: string;
 }
+
+export interface JobApplication {
+  id: string;
+  job_id: string;
+  job_title?: string;
+  applicant_name: string;
+  applicant_email: string;
+  applicant_phone: string;
+  cover_letter?: string;
+  files: string[];
+  status: "pending" | "reviewed" | "approved" | "declined";
+  admin_notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Message {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  status: "new" | "read" | "replied" | "archived";
+  response?: string;
+  responded_at?: string;
+  created_at: string;
+  updated_at: string;
+}

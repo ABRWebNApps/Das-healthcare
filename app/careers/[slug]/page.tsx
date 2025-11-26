@@ -141,10 +141,10 @@ export default function JobDetailPage() {
               </a>
             ) : (
               <Link
-                href="/contact"
+                href={`/careers/${slug}/apply`}
                 className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                Contact Us to Apply
+                Apply Now
               </Link>
             )}
           </div>

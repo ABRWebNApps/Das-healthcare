@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
-import { Briefcase, Calendar, Users, TrendingUp } from "lucide-react";
+import { Briefcase, Calendar, Users, TrendingUp, MessageCircle, FileText } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminDashboard() {
@@ -11,6 +11,10 @@ export default function AdminDashboard() {
     appointments: 0,
     pendingAppointments: 0,
     activeJobs: 0,
+    applications: 0,
+    pendingApplications: 0,
+    messages: 0,
+    newMessages: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -40,11 +44,35 @@ export default function AdminDashboard() {
         .select("*", { count: "exact", head: true })
         .eq("status", "pending");
 
+      // Fetch application stats
+      const { count: totalApplications } = await supabase
+        .from("job_applications")
+        .select("*", { count: "exact", head: true });
+
+      const { count: pendingApplications } = await supabase
+        .from("job_applications")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "pending");
+
+      // Fetch message stats
+      const { count: totalMessages } = await supabase
+        .from("messages")
+        .select("*", { count: "exact", head: true });
+
+      const { count: newMessages } = await supabase
+        .from("messages")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "new");
+
       setStats({
         jobs: totalJobs || 0,
         appointments: totalAppointments || 0,
         pendingAppointments: pendingAppointments || 0,
         activeJobs: activeJobs || 0,
+        applications: totalApplications || 0,
+        pendingApplications: pendingApplications || 0,
+        messages: totalMessages || 0,
+        newMessages: newMessages || 0,
       });
     } catch (error) {
       console.error("Error fetching stats:", error);
@@ -69,6 +97,13 @@ export default function AdminDashboard() {
       href: "/admin/careers",
     },
     {
+      title: "Pending Applications",
+      value: stats.pendingApplications,
+      icon: FileText,
+      color: "orange",
+      href: "/admin/applications?status=pending",
+    },
+    {
       title: "Total Appointments",
       value: stats.appointments,
       icon: Calendar,
@@ -81,6 +116,13 @@ export default function AdminDashboard() {
       icon: Users,
       color: "orange",
       href: "/admin/appointments?status=pending",
+    },
+    {
+      title: "New Messages",
+      value: stats.newMessages,
+      icon: MessageCircle,
+      color: "red",
+      href: "/admin/messages?status=new",
     },
   ];
 
@@ -104,6 +146,7 @@ export default function AdminDashboard() {
             green: "bg-green-50 text-green-600",
             purple: "bg-purple-50 text-purple-600",
             orange: "bg-orange-50 text-orange-600",
+            red: "bg-red-50 text-red-600",
           };
 
           return (
@@ -126,7 +169,7 @@ export default function AdminDashboard() {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/admin/careers/new"
             className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
@@ -135,11 +178,25 @@ export default function AdminDashboard() {
             <p className="font-medium text-gray-700">Create New Job Post</p>
           </Link>
           <Link
+            href="/admin/applications"
+            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
+          >
+            <FileText className="mx-auto mb-2 text-gray-400" size={32} />
+            <p className="font-medium text-gray-700">View Applications</p>
+          </Link>
+          <Link
             href="/admin/appointments"
             className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
           >
             <Calendar className="mx-auto mb-2 text-gray-400" size={32} />
             <p className="font-medium text-gray-700">View Appointments</p>
+          </Link>
+          <Link
+            href="/admin/messages"
+            className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
+          >
+            <MessageCircle className="mx-auto mb-2 text-gray-400" size={32} />
+            <p className="font-medium text-gray-700">View Messages</p>
           </Link>
         </div>
       </div>

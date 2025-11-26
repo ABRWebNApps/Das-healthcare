@@ -10,7 +10,8 @@ import {
   Calendar, 
   LogOut,
   Menu,
-  X
+  X,
+  MessageCircle
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -96,7 +97,9 @@ export default function AdminLayout({
   const navItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/careers", label: "Careers", icon: Briefcase },
+    { href: "/admin/applications", label: "Applications", icon: Briefcase },
     { href: "/admin/appointments", label: "Appointments", icon: Calendar },
+    { href: "/admin/messages", label: "Messages", icon: MessageCircle },
   ];
 
   return (

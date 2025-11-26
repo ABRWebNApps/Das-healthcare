@@ -62,7 +62,47 @@ CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
 CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(appointment_date);
 ```
 
-### 3. Enable Row Level Security (RLS)
+### 3. Job Applications Table
+
+```sql
+CREATE TABLE IF NOT EXISTS job_applications (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  job_id UUID NOT NULL REFERENCES jobs(id) ON DELETE CASCADE,
+  applicant_name TEXT NOT NULL,
+  applicant_email TEXT NOT NULL,
+  applicant_phone TEXT NOT NULL,
+  cover_letter TEXT,
+  files TEXT[] DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'approved', 'declined')),
+  admin_notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_applications_job_id ON job_applications(job_id);
+CREATE INDEX IF NOT EXISTS idx_applications_status ON job_applications(status);
+```
+
+### 4. Messages Table
+
+```sql
+CREATE TABLE IF NOT EXISTS messages (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'read', 'replied', 'archived')),
+  response TEXT,
+  responded_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_status ON messages(status);
+CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
+```
+
+### 5. Enable Row Level Security (RLS)
 
 ```sql
 -- Enable RLS on jobs table
@@ -86,6 +126,49 @@ CREATE POLICY "Public can create appointments" ON appointments
 -- Allow authenticated users full access to appointments
 CREATE POLICY "Admins can manage appointments" ON appointments
   FOR ALL USING (auth.role() = 'authenticated');
+
+-- Enable RLS on job_applications table
+ALTER TABLE job_applications ENABLE ROW LEVEL SECURITY;
+
+-- Allow public to create applications
+CREATE POLICY "Public can create applications" ON job_applications
+  FOR INSERT WITH CHECK (true);
+
+-- Allow authenticated users full access to applications
+CREATE POLICY "Admins can manage applications" ON job_applications
+  FOR ALL USING (auth.role() = 'authenticated');
+
+-- Enable RLS on messages table
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+
+-- Allow public to create messages
+CREATE POLICY "Public can create messages" ON messages
+  FOR INSERT WITH CHECK (true);
+
+-- Allow authenticated users full access to messages
+CREATE POLICY "Admins can manage messages" ON messages
+  FOR ALL USING (auth.role() = 'authenticated');
+```
+
+### 6. Set Up Supabase Storage for File Uploads
+
+1. **Go to Storage** in your Supabase dashboard
+2. **Create a new bucket** named `applications`
+3. **Set bucket to public** (or configure policies as needed)
+4. **Add storage policy** (optional, for better security):
+
+```sql
+-- Allow public to upload files
+CREATE POLICY "Public can upload files" ON storage.objects
+  FOR INSERT WITH CHECK (bucket_id = 'applications');
+
+-- Allow public to read files
+CREATE POLICY "Public can read files" ON storage.objects
+  FOR SELECT USING (bucket_id = 'applications');
+
+-- Allow authenticated users to delete files
+CREATE POLICY "Admins can delete files" ON storage.objects
+  FOR DELETE USING (bucket_id = 'applications' AND auth.role() = 'authenticated');
 ```
 
 ## Authentication Setup

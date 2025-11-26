@@ -105,18 +105,6 @@ export default function Navbar() {
               Careers
             </Link>
           </li>
-          <li>
-            <Link
-              href="/contact"
-              className={`${
-                pathname === "/contact"
-                  ? "text-blue-500"
-                  : "text-gray-700 hover:text-blue-500"
-              } transition-colors`}
-            >
-              Contact Us
-            </Link>
-          </li>
         </ul>
 
         <div className="flex items-center gap-4">
@@ -225,19 +213,6 @@ export default function Navbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Careers
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/contact"
-                className={`block py-2 ${
-                  pathname === "/contact"
-                    ? "text-blue-500"
-                    : "text-gray-700 hover:text-blue-500"
-                } transition-colors`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact Us
               </Link>
             </li>
 
