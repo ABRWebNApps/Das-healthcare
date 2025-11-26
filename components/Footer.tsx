@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Twitter } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
@@ -121,7 +122,21 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-200"></div>
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <motion.p
+            animate={{
+              scale: [1, 1.01, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="text-sm md:text-base font-medium text-blue-600 text-center"
+          >
+            Developed By ABR Technologies
+          </motion.p>
+        </div>
       </div>
     </footer>
   );
