@@ -2,12 +2,14 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { supabase } from "@/lib/supabase/client";
 import {
   Phone,
   Mail,
   MapPin,
   Facebook,
   Instagram,
+  CheckCircle,
 } from "lucide-react";
 import { SiX } from "react-icons/si";
 import TextareaAutosize from "react-textarea-autosize";
@@ -54,9 +56,48 @@ export default function ContactForm() {
     setForm((s) => ({ ...s, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("Appointment request submitted successfully.");
+    setSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("appointments").insert({
+        client_name: form.name,
+        client_email: form.email,
+        client_phone: form.phone,
+        subject: form.subject,
+        reason: form.reason,
+        department: form.department,
+        appointment_date: form.date,
+        appointment_time: form.time,
+        status: "pending",
+      });
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      setForm({
+        name: "",
+        email: "",
+        subject: "",
+        reason: "",
+        department: "",
+        message: "",
+        date: "",
+        time: "",
+        phone: "",
+      });
+
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error: any) {
+      console.error("Error submitting appointment:", error);
+      alert("Failed to submit appointment. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -205,12 +246,21 @@ export default function ContactForm() {
               className="w-full bg-white border border-blue-400 rounded-md p-2 resize-none"
             />
           </div>
+          {/* Success Message */}
+          {submitSuccess && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center gap-2">
+              <CheckCircle size={20} />
+              <span>Appointment request submitted successfully!</span>
+            </div>
+          )}
+
           {/* Button */}
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-3xl font-semibold transition w-[180px]"
+            disabled={submitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-3xl font-semibold transition w-[180px] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit
+            {submitting ? "Submitting..." : "Submit"}
           </button>
         </form>
 

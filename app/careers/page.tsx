@@ -4,7 +4,8 @@ import WhyJoinSection from "@/components/WhyJion";
 import ApplicationProcess from "@/components/Application";
 import Team from "@/components/Team";
 import Trusted from "@/components/Trusted";
-import Ready from "@/components/Ready"; 
+import Ready from "@/components/Ready";
+import JobListings from "@/components/JobListings";
 
 export default function CareersPage() {
   return (
@@ -12,6 +13,7 @@ export default function CareersPage() {
       <main className="relative">
         <Navbar />
         <JoinOurFamilySection />
+        <JobListings />
         <WhyJoinSection/>
         <ApplicationProcess />
         <Team />

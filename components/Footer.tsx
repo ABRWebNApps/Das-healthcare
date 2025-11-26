@@ -98,8 +98,10 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Contact Info</h3>
             <ul className="space-y-3">
               <li className="text-gray-600">
-                9, Arcus Road, Bromley.<br/>
-                Kent BR1 4NN. <br/>Service Providers:Personal Care.
+                9, Arcus Road, Bromley.
+                <br />
+                Kent BR1 4NN. <br />
+                Service Providers:Personal Care.
               </li>
               <li>
                 <a
@@ -118,24 +120,20 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+            <motion.p
+              animate={{
+                scale: [1, 1.01, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="text-sm md:text-base font-medium text-blue-600 mt-4"
+            >
+              Developed By ABR Technologies
+            </motion.p>
           </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <motion.p
-            animate={{
-              scale: [1, 1.01, 1],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="text-sm md:text-base font-medium text-blue-600 text-center"
-          >
-            Developed By ABR Technologies
-          </motion.p>
         </div>
       </div>
     </footer>
