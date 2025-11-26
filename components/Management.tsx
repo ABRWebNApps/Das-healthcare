@@ -35,13 +35,15 @@ const TeamMember: React.FC<TeamMemberProps> = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-8"
+      className="w-full sm:w-1/2 lg:w-1/3 px-3 mb-6"
     >
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-xs">
-        <div className="relative h-56 w-full bg-gray-100">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden mx-auto w-full max-w-[280px]">
+        <div className="relative w-full aspect-[3/4] bg-gray-100">
           {imageLoading && !imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-              <div className="animate-pulse text-gray-400">Loading...</div>
+              <div className="animate-pulse text-gray-400 text-xs">
+                Loading...
+              </div>
             </div>
           )}
 
@@ -50,7 +52,8 @@ const TeamMember: React.FC<TeamMemberProps> = ({
               src={image.startsWith("/") ? image : `/${image}`} // Ensure path starts with /
               alt={name}
               fill
-              className="object-cover"
+              className="object-contain w-full"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={() => {
                 setImageError(true);
                 setImageLoading(false);
@@ -59,18 +62,20 @@ const TeamMember: React.FC<TeamMemberProps> = ({
               priority
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-500 text-2xl font-bold bg-gray-200">
+            <div className="w-full h-full flex items-center justify-center text-gray-500 text-xl font-bold bg-gray-200">
               {getInitials(name)}
             </div>
           )}
         </div>
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-gray-800 mb-1 text-center">
+        <div className="p-4">
+          <h3 className="text-lg font-bold text-gray-800 mb-1 text-center">
             {name}
           </h3>
-          <p className="text-gray-600 text-sm mb-4 text-center">{role}</p>
+          <p className="text-gray-600 text-xs mb-3 text-center">{role}</p>
 
-          <p className="text-gray-600 text-sm mb-4">{shortBio}</p>
+          <p className="text-gray-600 text-xs mb-3 leading-relaxed">
+            {shortBio}
+          </p>
 
           <motion.div
             initial={false}
@@ -81,14 +86,14 @@ const TeamMember: React.FC<TeamMemberProps> = ({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="text-gray-600 text-sm mb-4">{bio}</p>
+            <p className="text-gray-600 text-xs mb-3 leading-relaxed">{bio}</p>
           </motion.div>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setExpanded(!expanded)}
-            className={`w-full py-2 px-4 rounded-full font-medium transition-colors duration-300 ${
+            className={`w-full py-1.5 px-3 rounded-full text-xs font-medium transition-colors duration-300 ${
               expanded
                 ? "text-blue-600 border border-blue-400 bg-transparent hover:bg-blue-50"
                 : "bg-blue-300 text-white hover:bg-blue-400"
@@ -107,7 +112,7 @@ const MeetOurTeam = () => {
     {
       name: "Olajide Bankole, RN, DHM",
       role: "Co-Founder, Director of Care & Registered Manager",
-      image: "olajide-bankole.jpg", // Path relative to public folder
+      image: "olajide-bankole.png", // Path relative to public folder
       shortBio:
         "Highly skilled Acute and Critical Care Nurse with over 30 years of experience in national and international healthcare services.",
       bio: "Highly skilled and experienced Acute and Critical Care Nurse with over 30 years of national (NHS and Private Hospitals across England) and international service. Obtained education in LSSN, Lagos Nigeria, Olabisi Onabanjo University, formerly Ogun State University, Nigeria, Yishak Rabin Trauma Centre, Tel-Aviv, University of Israel, Kings College University of London, Edinburgh Napier University, Scotland, University of Oxford, UK. Clinical Educator/Trainer, Project Manager with WHO Consultancy Experience (COVID-19 Pandemic Response, Botswana).",
@@ -115,7 +120,7 @@ const MeetOurTeam = () => {
     {
       name: "Olutoyin Bankole",
       role: "Co-Founder & Director",
-      image: "/Olutoyin Bankole.jpg", // Path relative to public folder
+      image: "/Olutoyin Bankole.png", // Path relative to public folder
       shortBio:
         "Co-Founder with nearly two decades of experience in quality management and compliance in healthcare.",
       bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organized and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specializes in Qualities Management and Compliance, Team Building and Development.",
