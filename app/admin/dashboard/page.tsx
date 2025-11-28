@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Briefcase, Calendar, Users, TrendingUp, MessageCircle, FileText } from "lucide-react";
 import Link from "next/link";
+import AdminCalendar from "@/components/AdminCalendar";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -167,7 +168,7 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
@@ -200,6 +201,9 @@ export default function AdminDashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Appointment Calendar */}
+      <AdminCalendar />
     </div>
   );
 }

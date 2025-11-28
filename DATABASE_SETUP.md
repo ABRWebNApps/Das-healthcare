@@ -127,6 +127,10 @@ ALTER TABLE appointments ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public can create appointments" ON appointments
   FOR INSERT WITH CHECK (true);
 
+-- Allow public to read appointment availability (for booking calendar)
+CREATE POLICY "Public can read appointment availability" ON appointments
+  FOR SELECT USING (true);
+
 -- Allow authenticated users full access to appointments
 CREATE POLICY "Admins can manage appointments" ON appointments
   FOR ALL USING (auth.role() = 'authenticated');
@@ -156,10 +160,23 @@ CREATE POLICY "Admins can manage messages" ON messages
 
 ### 6. Set Up Supabase Storage for File Uploads
 
+**⚠️ IMPORTANT: This step is REQUIRED for job applications to work. Without this bucket, users will get a "bucket not found" error when submitting applications.**
+
+#### Step-by-Step Instructions:
+
 1. **Go to Storage** in your Supabase dashboard
+   - Navigate to your Supabase project dashboard
+   - Click on "Storage" in the left sidebar
+
 2. **Create a new bucket** named `applications`
-3. **Set bucket to public** (or configure policies as needed)
-4. **Add storage policy** (optional, for better security):
+   - Click "New bucket" or "Create bucket" button
+   - Name: `applications` (must be exactly this name, case-sensitive)
+   - **Make the bucket PUBLIC** (toggle "Public bucket" to ON)
+   - Click "Create bucket"
+
+3. **Add storage policies** (REQUIRED for file uploads to work):
+
+Go to the SQL Editor in your Supabase dashboard and run these commands:
 
 ```sql
 -- Allow public to upload files
@@ -174,6 +191,12 @@ CREATE POLICY "Public can read files" ON storage.objects
 CREATE POLICY "Admins can delete files" ON storage.objects
   FOR DELETE USING (bucket_id = 'applications' AND auth.role() = 'authenticated');
 ```
+
+#### Troubleshooting:
+
+- **Error: "bucket not found"**: Make sure you've created the bucket with the exact name `applications` (lowercase)
+- **Error: "new row violates row-level security policy"**: Make sure you've run the storage policy SQL commands above
+- **Files not uploading**: Verify the bucket is set to "Public" in the bucket settings
 
 ## Authentication Setup
 

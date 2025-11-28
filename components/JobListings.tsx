@@ -66,7 +66,7 @@ export default function JobListings() {
 
   if (jobs.length === 0 && !loading) {
     return (
-      <section className="py-16 px-4">
+      <section id="current-openings" className="py-16 px-4 scroll-mt-20">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Current Openings</h2>
           {error ? (
@@ -88,7 +88,7 @@ export default function JobListings() {
   }
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section id="current-openings" className="py-16 px-4 bg-white scroll-mt-20">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Current Openings</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

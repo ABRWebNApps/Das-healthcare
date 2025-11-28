@@ -57,7 +57,15 @@ export default function JobApplyPage() {
         upsert: false,
       });
 
-    if (error) throw error;
+    if (error) {
+      // Check if it's a bucket not found error
+      if (error.message?.toLowerCase().includes("bucket") || error.message?.toLowerCase().includes("not found")) {
+        throw new Error(
+          "Storage bucket 'applications' not found. Please contact the administrator to set up the storage bucket in Supabase."
+        );
+      }
+      throw error;
+    }
 
     const { data: urlData } = supabase.storage.from("applications").getPublicUrl(fileName);
     return urlData.publicUrl;
@@ -81,18 +89,37 @@ export default function JobApplyPage() {
       // Upload all files from custom fields
       const allFileUrls: string[] = [];
       const customResponses: Record<string, any> = { ...customData };
+      let fileUploadError: string | null = null;
 
       for (const [fieldId, fieldFiles] of Object.entries(customFiles)) {
         if (fieldFiles && fieldFiles.length > 0) {
           const uploadedUrls: string[] = [];
           for (const file of fieldFiles) {
-            const url = await uploadFile(file, job.id, fieldId);
-            uploadedUrls.push(url);
-            allFileUrls.push(url);
+            try {
+              const url = await uploadFile(file, job.id, fieldId);
+              uploadedUrls.push(url);
+              allFileUrls.push(url);
+            } catch (uploadError: any) {
+              // If bucket error, stop and show error
+              if (uploadError.message?.toLowerCase().includes("bucket") || 
+                  uploadError.message?.toLowerCase().includes("storage")) {
+                fileUploadError = uploadError.message;
+                break;
+              }
+              // For other upload errors, log but continue
+              console.error(`Error uploading file ${file.name}:`, uploadError);
+            }
           }
           // Store file URLs in custom responses
-          customResponses[fieldId] = uploadedUrls;
+          if (uploadedUrls.length > 0) {
+            customResponses[fieldId] = uploadedUrls;
+          }
         }
+      }
+
+      // If there was a bucket error, don't proceed with submission
+      if (fileUploadError) {
+        throw new Error(fileUploadError);
       }
 
       // Create application record
@@ -102,7 +129,7 @@ export default function JobApplyPage() {
         applicant_name: standardFormData.name,
         applicant_email: standardFormData.email,
         applicant_phone: standardFormData.phone,
-        files: allFileUrls,
+        files: allFileUrls.length > 0 ? allFileUrls : null,
         custom_responses: Object.keys(customResponses).length > 0 ? customResponses : null,
         status: "pending",
       });
@@ -115,7 +142,54 @@ export default function JobApplyPage() {
       }, 3000);
     } catch (error: any) {
       console.error("Error submitting application:", error);
-      alert(error.message || "Failed to submit application. Please try again.");
+      
+      // Extract error message and details
+      const errorMessage = error?.message || "Failed to submit application. Please try again.";
+      const errorCode = error?.code || error?.error_code || "";
+      const errorDetails = error?.details || error?.hint || "";
+      
+      // Log full error for debugging
+      console.error("Full error details:", {
+        message: errorMessage,
+        code: errorCode,
+        details: errorDetails,
+        fullError: error
+      });
+      
+      // Provide more helpful error messages based on error type
+      if (errorMessage.toLowerCase().includes("bucket") || 
+          errorMessage.toLowerCase().includes("storage") ||
+          errorCode === "PGRST301") {
+        alert(
+          "Storage Configuration Error:\n\n" +
+          "The file storage bucket is not configured. Please contact the website administrator.\n\n" +
+          "Administrators: Please create a bucket named 'applications' in your Supabase Storage dashboard."
+        );
+      } else if (errorMessage.toLowerCase().includes("column") || 
+                 errorMessage.toLowerCase().includes("schema cache") ||
+                 errorMessage.toLowerCase().includes("job_title")) {
+        alert(
+          "Database Schema Error:\n\n" +
+          "The database table is missing required columns. Please run the migration script:\n\n" +
+          "MIGRATION_ADD_JOB_TITLE_COLUMN.sql\n\n" +
+          "This will add the missing 'job_title' column to the job_applications table."
+        );
+      } else if (errorMessage.toLowerCase().includes("row-level security") ||
+                 errorMessage.toLowerCase().includes("policy")) {
+        alert(
+          "Permission Error:\n\n" +
+          "The database security policies are not configured correctly. Please check:\n\n" +
+          "1. RLS policies for job_applications table\n" +
+          "2. Storage policies for the 'applications' bucket\n\n" +
+          "See DATABASE_SETUP.md for the correct SQL policies."
+        );
+      } else {
+        // Show detailed error message
+        const fullErrorMessage = errorDetails 
+          ? `${errorMessage}\n\nDetails: ${errorDetails}`
+          : errorMessage;
+        alert(`Error: ${fullErrorMessage}`);
+      }
     } finally {
       setSubmitting(false);
     }

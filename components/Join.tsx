@@ -41,13 +41,19 @@ export default function JoinOurFamilySection() {
     
 
       <motion.button
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.97 }}
-  className="relative bg-[#0091FF] hover:bg-[#007EE5] text-white font-semibold py-3 px-7 rounded-full text-sm sm:text-base transition-all duration-300 shadow-md overflow-hidden group"
->
-  <span className="relative z-10">View Current Opportunities</span>
-  <span className="absolute inset-0 rounded-full bg-blue-400 opacity-0 group-hover:opacity-40 blur-lg transition duration-500"></span>
-    </motion.button>
+        onClick={() => {
+          const element = document.getElementById("current-openings");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.97 }}
+        className="relative bg-[#0091FF] hover:bg-[#007EE5] text-white font-semibold py-3 px-7 rounded-full text-sm sm:text-base transition-all duration-300 shadow-md overflow-hidden group"
+      >
+        <span className="relative z-10">View Current Opportunities</span>
+        <span className="absolute inset-0 rounded-full bg-blue-400 opacity-0 group-hover:opacity-40 blur-lg transition duration-500"></span>
+      </motion.button>
       </motion.div>
     </section>
   );

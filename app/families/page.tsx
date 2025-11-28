@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navigation";
 import FamiliesHero from "@/components/FamiliesHero";
 import Commitment from "@/components/Commitment";
-import TestimonialsSection from "@/components/Testimonial";
 import RegisteredAndTrusted from "@/components/Registered";
 
 export default function FamiliesPage() {
@@ -11,7 +10,6 @@ export default function FamiliesPage() {
         <Navbar />
         <FamiliesHero />
         <Commitment />  
-        <TestimonialsSection />
         <RegisteredAndTrusted />
       </main>
     </div>

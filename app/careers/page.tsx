@@ -13,9 +13,9 @@ export default function CareersPage() {
       <main className="relative">
         <Navbar />
         <JoinOurFamilySection />
-        <JobListings />
         <WhyJoinSection/>
         <ApplicationProcess />
+        <JobListings />
         <Team />
         <Trusted  />
         <Ready />

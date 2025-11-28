@@ -37,6 +37,138 @@ export default function ModernBookingForm() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [bookedAppointments, setBookedAppointments] = useState<Array<{ date: string; time: string }>>([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
+
+  useEffect(() => {
+    fetchBookedAppointments();
+    
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel("booking_appointments_changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "appointments" },
+        () => {
+          fetchBookedAppointments();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // Refresh appointments when returning to date selection
+  useEffect(() => {
+    if (currentStep === "date") {
+      fetchBookedAppointments();
+    }
+  }, [currentStep]);
+
+  const fetchBookedAppointments = async () => {
+    try {
+      setLoadingAppointments(true);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Normalize to start of day
+      const futureDate = addDays(today, 60);
+      
+      const { data, error } = await supabase
+        .from("appointments")
+        .select("appointment_date, appointment_time")
+        .gte("appointment_date", format(today, "yyyy-MM-dd"))
+        .lte("appointment_date", format(futureDate, "yyyy-MM-dd"))
+        .in("status", ["pending", "confirmed", "rescheduled"]);
+
+      if (error) {
+        console.error("Supabase error fetching appointments:", error);
+        console.error("Error details:", {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        });
+        
+        // If it's a permissions error, show helpful message
+        if (error.code === '42501' || error.message?.includes('permission') || error.message?.includes('policy')) {
+          console.error("PERMISSIONS ERROR: Public users cannot read appointments. Please run MIGRATION_ADD_PUBLIC_APPOINTMENT_READ.sql");
+        }
+        
+        // Set empty array so dates don't get blocked incorrectly
+        setBookedAppointments([]);
+        return;
+      }
+      
+      // Normalize dates to YYYY-MM-DD format (remove any time component)
+      const booked = (data || []).map((apt) => {
+        // Handle both date strings and date objects
+        let dateStr = apt.appointment_date;
+        if (dateStr && typeof dateStr === 'string') {
+          // Extract just the date part (YYYY-MM-DD) if it includes time
+          dateStr = dateStr.split('T')[0];
+        }
+        return {
+          date: dateStr,
+          time: apt.appointment_time,
+        };
+      });
+      
+      console.log("Fetched booked appointments:", booked.length, "appointments");
+      console.log("Booked dates:", booked.map(b => b.date));
+      setBookedAppointments(booked);
+    } catch (error: any) {
+      console.error("Error fetching booked appointments:", error);
+      // Set empty array on error so we don't block dates incorrectly
+      setBookedAppointments([]);
+    } finally {
+      setLoadingAppointments(false);
+    }
+  };
+
+  const isDateBooked = (date: Date) => {
+    if (loadingAppointments) {
+      return false; // Don't block dates while loading
+    }
+    
+    const dateStr = format(date, "yyyy-MM-dd");
+    
+    // Check if date has any appointments (any status that blocks booking)
+    const isBooked = bookedAppointments.some((apt) => {
+      // Normalize the appointment date to YYYY-MM-DD format
+      let aptDate = apt.date;
+      if (aptDate && typeof aptDate === 'string') {
+        aptDate = aptDate.split('T')[0];
+      }
+      return aptDate === dateStr;
+    });
+    
+    return isBooked;
+  };
+
+  const isTimeSlotBooked = (date: Date, time: string) => {
+    const dateStr = format(date, "yyyy-MM-dd");
+    return bookedAppointments.some((apt) => {
+      // Normalize the appointment date to YYYY-MM-DD format
+      let aptDate = apt.date;
+      if (aptDate && typeof aptDate === 'string') {
+        aptDate = aptDate.split('T')[0];
+      }
+      return aptDate === dateStr && apt.time === time;
+    });
+  };
+
+  const getAppointmentsForDate = (date: Date) => {
+    const dateStr = format(date, "yyyy-MM-dd");
+    return bookedAppointments.filter((apt) => {
+      // Normalize the appointment date to YYYY-MM-DD format
+      let aptDate = apt.date;
+      if (aptDate && typeof aptDate === 'string') {
+        aptDate = aptDate.split('T')[0];
+      }
+      return aptDate === dateStr;
+    });
+  };
 
   // Generate available dates (next 30 days)
   const getAvailableDates = () => {
@@ -49,6 +181,15 @@ export default function ModernBookingForm() {
   };
 
   const handleDateSelect = (date: Date) => {
+    // Double check before allowing selection
+    if (isDateBooked(date)) {
+      alert("This date is fully booked. Please select another date.");
+      return;
+    }
+    if (date < new Date()) {
+      alert("Past dates cannot be selected.");
+      return;
+    }
     setSelectedDate(date);
     setCurrentStep("time");
   };
@@ -94,6 +235,8 @@ export default function ModernBookingForm() {
       if (error) throw error;
       setSuccess(true);
       setCurrentStep("confirm");
+      // Refresh booked appointments after successful booking
+      await fetchBookedAppointments();
     } catch (error: any) {
       console.error("Error submitting appointment:", error);
       alert("Failed to book appointment. Please try again.");
@@ -108,6 +251,8 @@ export default function ModernBookingForm() {
     setSelectedTime("");
     setFormData({ name: "", email: "", phone: "", reason: "", otherReason: "" });
     setSuccess(false);
+    // Refresh appointments when resetting
+    fetchBookedAppointments();
   };
 
   const steps = [
@@ -192,30 +337,83 @@ export default function ModernBookingForm() {
                   </div>
 
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-2">
-                    {getAvailableDates().map((date, index) => (
-                      <motion.button
-                        key={index}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleDateSelect(date)}
-                        className={`p-3 rounded-lg border-2 transition-all ${
-                          selectedDate && isSameDay(date, selectedDate)
-                            ? "border-blue-600 bg-blue-50"
-                            : "border-gray-200 hover:border-blue-300 hover:bg-blue-50"
-                        }`}
-                      >
-                        <div className="text-xs font-medium text-gray-600">
-                          {format(date, "EEE")}
-                        </div>
-                        <div className="text-lg font-bold text-gray-900 mt-1">
-                          {format(date, "d")}
-                        </div>
-                        <div className="text-xs text-gray-500 mt-0.5">
-                          {format(date, "MMM")}
-                        </div>
-                      </motion.button>
-                    ))}
+                    {getAvailableDates().map((date, index) => {
+                      const isBooked = isDateBooked(date);
+                      const isPast = date < new Date();
+                      const isAvailable = !isBooked && !isPast;
+                      
+                      return (
+                        <motion.button
+                          key={index}
+                          whileHover={isAvailable ? { scale: 1.05 } : {}}
+                          whileTap={isAvailable ? { scale: 0.95 } : {}}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (isAvailable) {
+                              handleDateSelect(date);
+                            } else {
+                              alert(isBooked ? "This date is fully booked. Please select another date." : "Past dates cannot be selected.");
+                            }
+                          }}
+                          disabled={!isAvailable}
+                          className={`p-3 rounded-lg border-2 transition-all relative ${
+                            isBooked
+                              ? "border-red-300 bg-red-100 text-red-700 cursor-not-allowed opacity-75"
+                              : isPast
+                              ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed opacity-50"
+                              : selectedDate && isSameDay(date, selectedDate)
+                              ? "border-blue-600 bg-blue-50 text-blue-900"
+                              : "border-green-300 bg-green-50 text-green-900 hover:border-green-400 hover:bg-green-100"
+                          }`}
+                          title={
+                            isBooked
+                              ? "This date is fully booked"
+                              : isPast
+                              ? "Past date"
+                              : "Available - Click to select"
+                          }
+                        >
+                          <div className={`text-xs font-medium ${
+                            isBooked ? "text-red-600" : isPast ? "text-gray-400" : "text-green-700"
+                          }`}>
+                            {format(date, "EEE")}
+                          </div>
+                          <div className={`text-lg font-bold mt-1 ${
+                            isBooked ? "text-red-700" : isPast ? "text-gray-500" : "text-green-800"
+                          }`}>
+                            {format(date, "d")}
+                          </div>
+                          <div className={`text-xs mt-0.5 ${
+                            isBooked ? "text-red-600" : isPast ? "text-gray-400" : "text-green-600"
+                          }`}>
+                            {format(date, "MMM")}
+                          </div>
+                          {isBooked && (
+                            <div className="absolute top-1 right-1 w-2 h-2 bg-red-600 rounded-full"></div>
+                          )}
+                          {isAvailable && !selectedDate && (
+                            <div className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                          )}
+                        </motion.button>
+                      );
+                    })}
                   </div>
+                  {loadingAppointments && (
+                    <p className="text-sm text-gray-500 text-center mt-2">Loading availability...</p>
+                  )}
+                  {!loadingAppointments && (
+                    <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded bg-green-500"></div>
+                        <span className="text-gray-600">Available</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded bg-red-500"></div>
+                        <span className="text-gray-600">Booked</span>
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -245,22 +443,40 @@ export default function ModernBookingForm() {
                   </div>
 
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-                    {TIME_SLOTS.map((time) => (
-                      <motion.button
-                        key={time}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleTimeSelect(time)}
-                        className={`p-3 rounded-xl border-2 transition-all font-medium ${
-                          selectedTime === time
-                            ? "border-blue-600 bg-blue-600 text-white"
-                            : "border-gray-200 hover:border-blue-300 text-gray-700"
-                        }`}
-                      >
-                        {time}
-                      </motion.button>
-                    ))}
+                    {TIME_SLOTS.map((time) => {
+                      const isBooked = selectedDate ? isTimeSlotBooked(selectedDate, time) : false;
+                      
+                      return (
+                        <motion.button
+                          key={time}
+                          whileHover={!isBooked ? { scale: 1.05 } : {}}
+                          whileTap={!isBooked ? { scale: 0.95 } : {}}
+                          onClick={() => !isBooked && handleTimeSelect(time)}
+                          disabled={isBooked}
+                          className={`p-3 rounded-xl border-2 transition-all font-medium relative ${
+                            isBooked
+                              ? "border-red-200 bg-red-50 text-red-400 opacity-60 cursor-not-allowed line-through"
+                              : selectedTime === time
+                              ? "border-blue-600 bg-blue-600 text-white"
+                              : "border-gray-200 hover:border-blue-300 text-gray-700"
+                          }`}
+                          title={isBooked ? "This time slot is already booked" : "Available"}
+                        >
+                          {time}
+                          {isBooked && (
+                            <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                          )}
+                        </motion.button>
+                      );
+                    })}
                   </div>
+                  {selectedDate && getAppointmentsForDate(selectedDate).length > 0 && (
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <p className="text-sm text-yellow-800">
+                        Some time slots on this date are already booked. Please select an available time.
+                      </p>
+                    </div>
+                  )}
                 </motion.div>
               )}
 

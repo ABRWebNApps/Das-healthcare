@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Appointment } from "@/lib/supabase/types";
-import { Calendar, Check, X, Clock, User, Mail, Phone, Edit, Trash2 } from "lucide-react";
+import { Calendar, Check, X, Clock, User, Mail, Phone, Edit, Trash2, RotateCcw, CheckCircle } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 
@@ -13,6 +13,30 @@ export default function AppointmentsAdmin() {
   const [filter, setFilter] = useState<string>("all");
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [notes, setNotes] = useState("");
+  const [rescheduleAppointment, setRescheduleAppointment] = useState<Appointment | null>(null);
+  const [newDate, setNewDate] = useState("");
+  const [newTime, setNewTime] = useState("");
+
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true);
+      let query = supabase.from("appointments").select("*");
+      
+      if (filter !== "all") {
+        query = query.eq("status", filter);
+      }
+      
+      query = query.order("appointment_date", { ascending: true });
+
+      const { data, error } = await query;
+      if (error) throw error;
+      setAppointments(data || []);
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchAppointments();
@@ -32,28 +56,6 @@ export default function AppointmentsAdmin() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
-
-  const fetchAppointments = async () => {
-    try {
-      let query = supabase.from("appointments").select("*").order("appointment_date", { ascending: true });
-      
-      if (filter !== "all") {
-        query = query.eq("status", filter);
-      }
-
-      const { data, error } = await query;
-      if (error) throw error;
-      setAppointments(data || []);
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAppointments();
   }, [filter]);
 
   const updateStatus = async (id: string, status: Appointment["status"]) => {
@@ -64,12 +66,56 @@ export default function AppointmentsAdmin() {
         .eq("id", id);
 
       if (error) throw error;
-      setAppointments(
-        appointments.map((apt) => (apt.id === id ? { ...apt, status } : apt))
-      );
+      await fetchAppointments(); // Refresh the list
     } catch (error) {
       console.error("Error updating status:", error);
       alert("Failed to update appointment status");
+    }
+  };
+
+  const handleReschedule = async () => {
+    if (!rescheduleAppointment || !newDate || !newTime) {
+      alert("Please select both date and time");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("appointments")
+        .update({
+          appointment_date: newDate,
+          appointment_time: newTime,
+          status: "rescheduled",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", rescheduleAppointment.id);
+
+      if (error) throw error;
+      setRescheduleAppointment(null);
+      setNewDate("");
+      setNewTime("");
+      await fetchAppointments(); // Refresh the list
+    } catch (error) {
+      console.error("Error rescheduling appointment:", error);
+      alert("Failed to reschedule appointment");
+    }
+  };
+
+  const handleComplete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from("appointments")
+        .update({
+          status: "completed",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+
+      if (error) throw error;
+      await fetchAppointments(); // Refresh the list
+    } catch (error) {
+      console.error("Error completing appointment:", error);
+      alert("Failed to complete appointment");
     }
   };
 
@@ -225,6 +271,17 @@ export default function AppointmentsAdmin() {
                         <Check size={20} />
                       </button>
                       <button
+                        onClick={() => {
+                          setRescheduleAppointment(apt);
+                          setNewDate(apt.appointment_date);
+                          setNewTime(apt.appointment_time);
+                        }}
+                        className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                        title="Reschedule"
+                      >
+                        <RotateCcw size={20} />
+                      </button>
+                      <button
                         onClick={() => updateStatus(apt.id, "cancelled")}
                         className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
                         title="Cancel"
@@ -233,16 +290,62 @@ export default function AppointmentsAdmin() {
                       </button>
                     </>
                   )}
-                  <button
-                    onClick={() => {
-                      setSelectedAppointment(apt);
-                      setNotes(apt.notes || "");
-                    }}
-                    className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
-                    title="Add Notes"
-                  >
-                    <Edit size={20} />
-                  </button>
+                  {apt.status === "confirmed" && (
+                    <>
+                      <button
+                        onClick={() => {
+                          setRescheduleAppointment(apt);
+                          setNewDate(apt.appointment_date);
+                          setNewTime(apt.appointment_time);
+                        }}
+                        className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                        title="Reschedule"
+                      >
+                        <RotateCcw size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleComplete(apt.id)}
+                        className="p-2 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-100 transition-colors"
+                        title="Mark as Completed"
+                      >
+                        <CheckCircle size={20} />
+                      </button>
+                    </>
+                  )}
+                  {apt.status === "rescheduled" && (
+                    <>
+                      <button
+                        onClick={() => {
+                          setRescheduleAppointment(apt);
+                          setNewDate(apt.appointment_date);
+                          setNewTime(apt.appointment_time);
+                        }}
+                        className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                        title="Reschedule Again"
+                      >
+                        <RotateCcw size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleComplete(apt.id)}
+                        className="p-2 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-100 transition-colors"
+                        title="Mark as Completed"
+                      >
+                        <CheckCircle size={20} />
+                      </button>
+                    </>
+                  )}
+                  {apt.status !== "completed" && apt.status !== "cancelled" && (
+                    <button
+                      onClick={() => {
+                        setSelectedAppointment(apt);
+                        setNotes(apt.notes || "");
+                      }}
+                      className="p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
+                      title="Add Notes"
+                    >
+                      <Edit size={20} />
+                    </button>
+                  )}
                   <button
                     onClick={() => handleDelete(apt.id)}
                     className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
@@ -283,6 +386,58 @@ export default function AppointmentsAdmin() {
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Save Notes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {rescheduleAppointment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Reschedule Appointment</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Current: {format(new Date(rescheduleAppointment.appointment_date), "MMM dd, yyyy")} at {rescheduleAppointment.appointment_time}
+            </p>
+            
+            <div className="space-y-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">New Date</label>
+                <input
+                  type="date"
+                  value={newDate}
+                  onChange={(e) => setNewDate(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">New Time</label>
+                <input
+                  type="time"
+                  value={newTime}
+                  onChange={(e) => setNewTime(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                />
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setRescheduleAppointment(null);
+                  setNewDate("");
+                  setNewTime("");
+                }}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleReschedule}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Reschedule
               </button>
             </div>
           </div>

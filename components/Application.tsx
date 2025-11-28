@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
 
 const steps = [
   {
@@ -86,6 +87,30 @@ export default function ApplicationProcess() {
             </motion.div>
           ))}
         </div>
+
+        {/* View Current Opportunities Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-12"
+        >
+          <motion.button
+            onClick={() => {
+              const element = document.getElementById("current-openings");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:bg-blue-700"
+          >
+            View Current Opportunities
+            <ArrowDown size={20} />
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );
