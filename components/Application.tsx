@@ -15,16 +15,22 @@ const steps = [
     number: 2,
     title: "Submit Your Application",
     line1: "Complete our online application form",
-    line2: "and attach your resume and cover letter.",
+    line2: "and attach your CV and cover letter.",
   },
   {
     number: 3,
+    title: "Search and Verification",
+    line1: "Search and verification of prospective employees",
+    line2: "CV / Resumes and past employment history and other vital records.",
+  },
+  {
+    number: 4,
     title: "Interview Process",
     line1: "Successful candidates will be invited",
     line2: "for an interview to discuss experience.",
   },
   {
-    number: 4,
+    number: 5,
     title: "Join Our Family",
     line1: "Receive an offer and begin your journey",
     line2: "with DAS HEALTHCARE PROVIDERS today.",
@@ -46,7 +52,7 @@ export default function ApplicationProcess() {
           viewport={{ once: true }}
           className="text-4xl md:text-5xl font-bold text-gray-900 mb-10"
         >
-          Our Simple Application Process
+          OUR SIMPLE BUT ROBUST APPLICATION PROCESS
         </motion.h2>
 
          {/* Steps Grid */}

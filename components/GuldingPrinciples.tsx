@@ -6,7 +6,7 @@ export default function GuidingPrinciples() {
   const principles = [
     {
       icon: <Heart className="w-10 h-10 text-[#FCE9C0]" />,
-      title: "Personalized Care",
+      title: "Personalised Care",
       description:
         "We craft bespoke care plans, honoring each individual's journey and fostering their independence and personal growth with deep empathy.",
     },

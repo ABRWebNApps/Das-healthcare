@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="mb-6">
+            <div className="mb-6 flex items-center gap-2">
               <Image
                 src="/logo.png"
                 alt="DAS Healthcare"
@@ -20,10 +20,11 @@ export default function Footer() {
                 height={48}
                 className="h-12 w-auto"
               />
+              <span className="text-blue-600 font-bold text-xl">DAS</span>
             </div>
             <p className="text-gray-600 max-w-md mb-6">
               Dedicated to providing compassionate care and support, empowering
-              lives through sepcialized services....
+              lives through domiciliary services.
             </p>
             <div className="flex items-center space-x-6 mb-6">
               <a
@@ -101,7 +102,7 @@ export default function Footer() {
                 9, Arcus Road, Bromley.
                 <br />
                 Kent BR1 4NN. <br />
-                Service Providers:Personal Care.
+                Service Provider: Personal Care.
               </li>
               <li>
                 <a

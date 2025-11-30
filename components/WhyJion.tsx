@@ -19,7 +19,7 @@ const benefits = [
   {
     icon: <GraduationCap className="w-8 h-8 text-blue-600" />,
     title: "Professional Growth",
-    text: "Access continuous learning opportunities, specialized training, and career advancement paths to help you thrive.",
+    text: "Access continuous learning opportunities, specialised training, and career advancement paths to help you thrive.",
   },
   {
     icon: <Handshake className="w-8 h-8 text-blue-600" />,

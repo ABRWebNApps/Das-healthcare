@@ -19,7 +19,7 @@ const commitmentItems: CommitmentItem[] = [
   },
   {
     Icon: ClipboardCheck,
-    title: "Personalized Care Plans",
+    title: "Personalised Care Plans",
     description:
       "Tailored care assessments and plans designed around individual needs, preferences, and aspirations to ensure the best support.",
   },

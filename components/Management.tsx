@@ -110,20 +110,20 @@ const TeamMember: React.FC<TeamMemberProps> = ({
 const MeetOurTeam = () => {
   const teamMembers = [
     {
-      name: "Olajide Bankole, RN, DHM",
+      name: "Olajide Bankole, RN",
       role: "Co-Founder, Director of Care & Registered Manager",
       image: "olajide-bankole.png", // Path relative to public folder
       shortBio:
-        "Highly skilled Acute and Critical Care Nurse with over 30 years of experience in national and international healthcare services.",
-      bio: "Highly skilled and experienced Acute and Critical Care Nurse with over 30 years of national (NHS and Private Hospitals across England) and international service. Obtained education in LSSN, Lagos Nigeria, Olabisi Onabanjo University, formerly Ogun State University, Nigeria, Yishak Rabin Trauma Centre, Tel-Aviv, University of Israel, Kings College University of London, Edinburgh Napier University, Scotland, University of Oxford, UK. Clinical Educator/Trainer, Project Manager with WHO Consultancy Experience (COVID-19 Pandemic Response, Botswana).",
+        "Highly skilled Acute and Critical Care Nurse with over 30 years of Nursing experience (NHS, Private hospitals and International services, including emergency/critical care Covid-19 nurse consultant role with WHO in Botswana).",
+      bio: "With over 30 years of Nursing experience (NHS, Private hospitals and International services, including emergency/critical care Covid-19 nurse consultant role with WHO in Botswana). Obtained education in Scotland and University of Oxford, UK. Exceptional qualities as clinical expertise. Transformative leadership acumen, strategic visionary leader. Compassionate, kind professional and emotional intelligence. Problem-solving, excellent communication skills and regulatory knowledge. Educator/Trainer.",
     },
     {
       name: "Olutoyin Bankole",
       role: "Co-Founder & Director",
       image: "/Olutoyin Bankole.png", // Path relative to public folder
       shortBio:
-        "Co-Founder with nearly two decades of experience in quality management and compliance in healthcare.",
-      bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organized and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specializes in Qualities Management and Compliance, Team Building and Development.",
+        "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development.",
+      bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organised and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specialises in Qualities Management and Compliance, Team Building and Development.",
     },
   ];
 

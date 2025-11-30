@@ -14,30 +14,30 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      '"DAS Healthcare has brought so much peace of mind. Their team treats my sister like family, and the personalized care has made a world of difference."',
-    name: "Sarah J.",
-    role: "Client's Sister",
+      '"Having worked alongside Olajide for over 15 years in critical care, I can attest to his exceptional clinical expertise and compassionate leadership. His dedication to patient care and professional development is truly inspiring."',
+    name: "Dr. Sarah Mitchell",
+    role: "Senior Consultant, NHS",
     avatar: "/Client-1.jpg",
   },
   {
     quote:
-      '"The support we received for our son was truly exceptional. The staff are incredibly understanding and have helped him thrive in ways we didn\'t imagine."',
-    name: "David L.",
-    role: "Client's Father",
+      '"Olajide\'s transformative leadership and strategic vision have been instrumental in improving care standards. His ability to mentor and develop nursing teams while maintaining the highest clinical standards is remarkable."',
+    name: "Dr. David Lawson",
+    role: "Clinical Director, Private Healthcare",
     avatar: "/Client-2.jpg",
   },
   {
     quote:
-      '"From the first assessment, we felt heard and understood. The dedication of the caregivers is profound, and their approach truly feels like an extension of our own family."',
-    name: "Maria P.",
-    role: "Client's Mother",
+      '"Working with Olajide during the COVID-19 response in Botswana was a privilege. His problem-solving skills, regulatory knowledge, and emotional intelligence make him an outstanding healthcare professional and leader."',
+    name: "Dr. Maria Patel",
+    role: "WHO Consultant",
     avatar: "/Client-3.jpg",
   },
   {
     quote:
-      '"I\'ve seen such a positive change in my brother since he started with DAS. The activities are engaging, and the staff are always patient and encouraging."',
-    name: "Emily R.",
-    role: "Client's Sibling",
+      '"As a fellow RN, I\'ve witnessed Olajide\'s commitment to excellence in nursing practice. His clinical expertise combined with his compassionate approach and excellent communication skills sets a benchmark for quality care."',
+    name: "Emily Roberts, RN",
+    role: "Senior Nurse Practitioner",
     avatar: "/Client-4.jpg",
   },
 ];
@@ -48,7 +48,7 @@ export default function FamiliesSection() {
       <section className="bg-blue-50 py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-center text-2xl md:text-3xl font-bold text-gray-700 mb-7">
-            What Our Families Say
+            What Our Colleagues Say
           </h2>
 
           <div className="flex flex-wrap justify-center gap-x-20 gap-y-12 md:gap-x-14 md:gap-y-16">

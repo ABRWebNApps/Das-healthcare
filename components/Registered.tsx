@@ -13,10 +13,16 @@ export default function RegisteredAndTrusted() {
 
         {/* Card */}
         <div className="bg-sky-50 w-full rounded-2xl shadow-sm p-8 md:p-10 text-center">
-          {/* BRN Badge */}
-          <div className="flex justify-center">
-            <span className="inline-block bg-sky-600 text-white font-semibold text-sm md:text-sm px-4 py-2 rounded-full mb-4">
-              BRN: 14651633
+          {/* Registration Badges */}
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
+            <span className="inline-block bg-sky-600 text-white font-semibold text-sm md:text-sm px-4 py-2 rounded-full">
+              BRN: 14651663
+            </span>
+            <span className="inline-block bg-sky-600 text-white font-semibold text-sm md:text-sm px-4 py-2 rounded-full">
+              CQC: CRT1-24768607163
+            </span>
+            <span className="inline-block bg-sky-600 text-white font-semibold text-sm md:text-sm px-4 py-2 rounded-full">
+              Provider ID: 1-20631585417
             </span>
           </div>
 

@@ -12,25 +12,25 @@ const About = () => {
     {
       image: "/doctor male 1.jpg",
       title: " COMPASSIONATE CARE FOR EVERY INDIVIDUAL",
-      description: "At DAS Healthcare, we believe everyone deserves dignity and respect. Our team provides personalized, empathetic care tailored to your unique needs, ensuring you feel valued and supported like family.",
+      description: "At DAS Healthcare, we believe everyone deserves dignity and respect. Our domiciliary care team provides personalised, empathetic support tailored to your unique needs, delivered in the comfort of your own home.",
       buttonText: "Request a Care Assessment"
     },
     {
       image: "/nurses smiling.jpg",
       title: "MAXIMIZING QUALITY OF LIFE AT HOME",
-      description: "We help you live life to the fullest in the comfort of your own home. Our services support your independence and well-being, ensuring you receive the care you need while maintaining the lifestyle you love.",
+      description: "Our domiciliary care services help you live life to the fullest in the comfort of your own home. We support your independence and well-being through personalised care delivered where you feel most comfortable.",
       buttonText: "Request a Care Assessment"
     },
     {
       image: "/Care-2.jpg",
       title: "SUPPORT ALL ABILITIES AND NEEDS",
-      description: "We proudly serve adults with learning difficulties, autism, and sensory impairments. Our inclusive care recognizes and respects every individual’s unique needs, fostering a supportive community.",
+      description: "We proudly provide domiciliary care for adults with learning difficulties, autism, and sensory impairments. Our inclusive approach recognises and respects every individual's unique needs, delivered in their own home environment.",
       buttonText: "Request a Care Assessment"
     },
     {
       image: "/Compassion.jpg",
       title: "TRUSTED CARE FROM DEDICATED PROFESSIONALS",
-      description: "Our caregivers are compassionate, skilled professionals committed to your well-being. We uphold the highest standards of care, integrity, and safety, so you can trust us to support you and your loved ones.",
+      description: "Our domiciliary care team consists of compassionate, skilled professionals committed to your well-being. We uphold the highest standards of care, integrity, and safety, delivering trusted support in your own home.",
       buttonText: "Request a Care Assessment"
     }
   ];

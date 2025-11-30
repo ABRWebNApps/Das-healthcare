@@ -19,7 +19,7 @@ export default function ExtendedFamilyHero() {
           , we believe in creating a supportive, <br />
           nurturing environment that extends beyond traditional care. We treat
           every <br /> individual as part of our extended family, fostering deep
-          connections and <br /> personalized support tailored to their unique
+          connections and <br /> personalised support tailored to their unique
           needs.
         </p>
 

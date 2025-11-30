@@ -20,13 +20,13 @@ const features = [
   },
   {
     icon: <Lightbulb className="w-10 h-10 text-blue-500 mx-auto mb-4" />,
-    title: "Personalized Care Plans",
+    title: "Personalised Care Plans",
     text: "Each care plan is uniquely tailored to the individual's needs, preferences, and goals, promoting independence and well-being.",
   },
   {
     icon: <BookOpen className="w-10 h-10 text-blue-500 mx-auto mb-4" />,
     title: "Expert & Dedicated Staff",
-    text: "Our team comprises highly trained and passionate professionals committed to delivering exceptional and specialized care.",
+    text: "Our team comprises highly trained and passionate professionals committed to delivering exceptional and specialised care.",
   },
   {
     icon: <ShieldCheck className="w-10 h-10 text-blue-500 mx-auto mb-4" />,

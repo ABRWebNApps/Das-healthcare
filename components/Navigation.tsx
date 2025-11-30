@@ -29,6 +29,7 @@ export default function Navbar() {
             className="w-auto h-12"
             priority
           />
+          <span className="text-blue-600 font-bold text-lg">DAS</span>
         </div>
 
         {/* Desktop Navigation Links */}

@@ -42,7 +42,7 @@ const Trusted = () => {
           whileHover={{ y: -3, boxShadow: "0 4px 12px rgba(0, 191, 255, 0.4)" }}
           className="inline-block bg-blue-500 text-white px-8 py-3 rounded-full font-bold mb-6"
         >
-          BRN: 14651633
+          BRN: 14651663
         </motion.div>
         <p className="text-gray-600 text-lg">
           We uphold the highest standards of professional care and compliance.

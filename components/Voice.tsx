@@ -8,7 +8,7 @@ export default function Voice() {
 	return (
 			<section className="w-full bg-white py-16 px-8">
 				<div className="max-w-[980px] mx-auto">
-				<h2 className="text-center text-2xl md:text-3xl font-semibold text-[#111827] mb-8">Voices of Our Family</h2>
+				<h2 className="text-center text-2xl md:text-3xl font-semibold text-[#111827] mb-8">Voices of Our Colleagues</h2>
 
 				{/* Testimonials row */}
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
@@ -16,23 +16,23 @@ export default function Voice() {
 						{
 							img: "/Client-1.jpg",
 							quote:
-								'"The team at DAS has truly become an extension of our family. The personalized care and genuine warmth make all the difference. We feel so much peace of mind."',
-							name: "Eleanor V.",
-							role: "Client’s Daughter",
+								'"Olajide\'s exceptional clinical expertise and transformative leadership have consistently elevated care standards. His compassionate approach and strategic vision make him an outstanding healthcare professional."',
+							name: "Eleanor V., RN",
+							role: "Senior Clinical Nurse",
 						},
 						{
 							img: "/Client-2.jpg",
 							quote:
-								'"I\'ve never felt so understood and supported. This approach has allowed me to grow and enjoy life more than I ever thought possible. It\'s truly a family here."',
-							name: "David S.",
-							role: "Client",
+								'"Having worked alongside Olajide for many years, I\'ve witnessed his problem-solving skills and regulatory knowledge firsthand. His dedication to professional development and clinical excellence is remarkable."',
+							name: "David S., RN",
+							role: "Nurse Manager",
 						},
 						{
 							img: "/Client-3.jpg",
 							quote:
-								'"Finding DAS was a blessing. The care, the understanding, and the genuine compassion for my brother are unmatched. It truly is like an extended family for us all."',
-							name: "Sophia L.",
-							role: "Client’s Sister",
+								'"Olajide\'s role as an educator and trainer has significantly contributed to improving nursing practice. His emotional intelligence, excellent communication skills, and kind professional approach are exemplary."',
+							name: "Sophia L., RN",
+							role: "Clinical Educator",
 						},
 					].map((t, i) => (
 									<figure
@@ -78,7 +78,11 @@ export default function Voice() {
 								</div>
 							</div>
 
-							<div className="text-[15px] text-gray-700 font-bold flex items-center">BRN: 14651633</div>
+							<div className="text-[15px] text-gray-700 font-bold flex flex-col items-center gap-1">
+								<div>BRN: 14651663</div>
+								<div>CQC: CRT1-24768607163</div>
+								<div>Provider ID: 1-20631585417</div>
+							</div>
 						</div>
 					</div>
 				</div>

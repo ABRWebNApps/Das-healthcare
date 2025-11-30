@@ -61,7 +61,7 @@ export default function OurServices() {
       <div className="relative z-10 w-full max-w-3xl mx-auto text-center text-white px-6 py-16">
         <div className="bg-black/40 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-lg">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            <span>Specialized Care,</span>
+            <span>Specialised Care,</span>
             <br />
             <span>Tailored With</span>
             <br />
@@ -69,9 +69,9 @@ export default function OurServices() {
           </h1>
 
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8 leading-relaxed">
-            We provide exceptional, person-centered support for adults with
-            learning disabilities, autism spectrum conditions, and sensory
-            impairments.
+            We provide exceptional, person-centred domiciliary care services 
+            delivered in your own home. Supporting adults with learning disabilities, 
+            autism spectrum conditions, and sensory impairments.
           </p>
 
           <div className="flex justify-center">

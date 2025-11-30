@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DAS Healthcare - Specialized Care Services",
+  title: "DAS Healthcare - Domiciliary Care Services",
   description:
-    "Providing specialized care and support services to enhance the quality of life for individuals with diverse needs.",
+    "Providing domiciliary care and support services to enhance the quality of life for individuals with diverse needs.",
 };
 
 export default function RootLayout({

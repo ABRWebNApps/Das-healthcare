@@ -35,21 +35,21 @@ const services: Service[] = [
   {
     title: "Learning Disability Support",
     description:
-      "Providing tailored support plans to help individuals achieve their potential  and life fullfilling lives.",
+      "Domiciliary care providing tailored support plans delivered in your home to help individuals achieve their potential and live fulfilling lives.",
     icon: Brain,
     img: "/learning-support.jpg",
   },
   {
     title: "Autism Spectrum Care",
     description:
-      "Specialized care approaches focusing on communication, and sensory integration and social skills development.",
+      "Domiciliary care with specialised approaches focusing on communication, sensory integration and social skills development, delivered at home.",
     icon: UserCheck,
     img: "/autism-care.jpg",
   },
   {
     title: "Sensory Impairment Solutions",
     description:
-      "Innovative solutions and adaptations to support individuals with visual and hearing impairments.",
+      "Domiciliary care with innovative solutions and adaptations delivered in your home to support individuals with visual and hearing impairments.",
     icon: Lightbulb,
     img: "/sensory.jpg",
   },
@@ -61,9 +61,9 @@ const services: Service[] = [
     img: "/sitting.jpg",
   },
   {
-    title: "Person-Centered Support",
+    title: "Person-Centred Support",
     description:
-      "Empowering individuals to shape their own care plans, focusing on personal goals, preferences and aspirations.",
+      "Domiciliary care empowering individuals to shape their own care plans, focusing on personal goals, preferences and aspirations, all delivered at home.",
     icon: Heart,
     img: "/centered-support.jpg",
   },

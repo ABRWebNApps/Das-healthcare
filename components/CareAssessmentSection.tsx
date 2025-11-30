@@ -31,9 +31,11 @@ export default function CareAssessmentSection() {
             <div className="flex items-center justify-center bg-blue-100 p-1 rounded-full">
               <Shield className="text-blue-600 w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <p className="text-gray-800 font-medium text-xs sm:text-sm md:text-base text-center sm:text-left">
-              BRN Registration: <span className="font-semibold">14651633</span>
-            </p>
+            <div className="text-gray-800 font-medium text-xs sm:text-sm md:text-base text-center sm:text-left">
+              <p>BRN: <span className="font-semibold">14651663</span></p>
+              <p>CQC: <span className="font-semibold">CRT1-24768607163</span></p>
+              <p>Provider ID: <span className="font-semibold">1-20631585417</span></p>
+            </div>
           </div>
         </div>
       </div>

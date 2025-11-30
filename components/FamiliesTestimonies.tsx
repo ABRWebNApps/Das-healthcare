@@ -6,23 +6,23 @@ export default function Testimonials() {
   const testimonials = [
     {
       id: 1,
-      text: "DAS Healthcare changed our lives. their compassionate approach and tailored support for our son with autism have been truly exceptional. we finally feel like an extended family.",
-      name: "Sarah L.",
-      position: "Parent of Client",
+      text: "Having collaborated with Olajide in various healthcare settings, I've consistently been impressed by his clinical expertise and transformative leadership. His commitment to delivering exceptional care while developing nursing teams is outstanding.",
+      name: "Sarah Lewis, RN",
+      position: "Nurse Manager, NHS Trust",
       image: "/Parent-client.jpg",
     },
     {
       id: 2,
-      text: "The support i recieved during my learning disablity is fantatic. I feel Empowered to make my own choice and pursue my hobies, thanks to the dedicated team at DAS. They truely understand my needs.",
-      name: "Micheal Rocks.",
-      position: "Client",
+      text: "Olajide's strategic vision and compassionate approach to healthcare leadership have made a significant impact. His ability to combine clinical excellence with emotional intelligence and regulatory knowledge is truly exceptional.",
+      name: "Michael Roberts, RN",
+      position: "Senior Clinical Nurse",
       image: "/Client2.jpg",
     },
     {
       id: 3,
-      text: "From the moment we contacted them, DAS Healthcare Provders Offered peace of mind. Their expertise in sensory impairements and the genuie care show to my mother are beyond compare.",
-      name: "Rosaline.",
-      position: "Client daughter",
+      text: "Working alongside Olajide has been a privilege. His problem-solving skills, excellent communication, and dedication to professional development make him an exemplary healthcare leader and educator.",
+      name: "Rosaline Thompson, RN",
+      position: "Clinical Educator",
       image: "/Client-daughter.jpg",
     },
   ];
@@ -30,7 +30,7 @@ export default function Testimonials() {
   return (
     <section className="py-12 g-gradient-to-br from-sky-50 via-gray-50 to-blue-50">
       <h2 className="text-center text-4xl font-semibold text-gray-900 mb-10">
-        What Our Families Say
+        What Our Colleagues Say
       </h2>
 
       <div className="flex flex-wrap justify-center gap-6 px-6">

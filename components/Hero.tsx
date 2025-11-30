@@ -32,11 +32,12 @@ export default function HeroSection() {
   {/* Content (unchanged) */}
   <div className="relative z-10 text-center px-6 max-w-2xl">
     <h1 className="text-4xl md:text-5xl font-bold text-blue-600 mb-4 drop-shadow-lg">
-      Compassionate Care, Empowering Lives
+      Compassionate Domiciliary Care, Empowering Lives
     </h1>
     <p className="text-white text-lg mb-8 drop-shadow-md">
-      Providing exceptional care for individuals with learning disabilities,
-      autism, and sensory impairments, fostering independence and well-being.
+      Delivering exceptional domiciliary care services in the comfort of your own home. 
+      Supporting individuals with learning disabilities, autism, and sensory impairments 
+      to live independently and well.
     </p>
 
     <button

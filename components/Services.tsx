@@ -14,19 +14,19 @@ const services: Service[] = [
   {
     title: "Learning Disabilities Support",
     description:
-      "Specialized assistance tailored to enhance daily living and independence.",
+      "Domiciliary care providing specialised assistance tailored to enhance daily living and independence, delivered in your own home.",
     link: "View Details",
   },
   {
     title: "Autism Spectrum Care",
     description:
-      "Focused strategies to support communication, social interaction, and sensory needs.",
+      "Domiciliary care with focused strategies delivered at home to support communication, social interaction, and sensory needs.",
     link: "View Details",
   },
   {
     title: "Sensory Impairment Aids",
     description:
-      "Adaptive support and environments for individuals with various sensory challenges.",
+      "Domiciliary care with adaptive support and home-based solutions for individuals with various sensory challenges.",
     link: "View Details",
   },
 ];
@@ -93,9 +93,17 @@ export default function Services() {
           >
             <div className="flex justify-center gap-3 items-center mb-5">
               <Award className="w-5 h-5 text-sky-500" />
-              <span className="bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                BRN: 14651633
-              </span>
+              <div className="flex flex-wrap justify-center gap-2">
+                <span className="bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  BRN: 14651663
+                </span>
+                <span className="bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  CQC: CRT1-24768607163
+                </span>
+                <span className="bg-sky-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  Provider ID: 1-20631585417
+                </span>
+              </div>
             </div>
             <div className="max-w-lg mx-auto">
               <p className="text-gray-700 text-lg leading-relaxed mb-5">

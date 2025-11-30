@@ -7,33 +7,33 @@ const testimonials = [
   {
     id: 1,
     quote:
-      "DAS Healthcare Providers has given us so much peace of mind. The care for my son is exceptional.",
-    name: "Thomas T.",
-    role: "Father of Client",
+      "Olajide's exceptional clinical expertise and compassionate leadership have consistently set high standards in healthcare delivery. His transformative approach to nursing leadership is truly inspiring.",
+    name: "Thomas Taylor, RN",
+    role: "Senior Nurse Practitioner",
     image: "/Thomas.jpg",
   },
   {
     id: 2,
     quote:
-      "The team at DAS is incredibly supportive. They communicate proactively and always put my sister’s needs first.",
-    name: "David L.",
-    role: "Brother of Client",
+      "Having worked with Olajide across multiple healthcare settings, I've witnessed his strategic vision and problem-solving abilities firsthand. His regulatory knowledge and communication skills are exemplary.",
+    name: "David Lawson, RN",
+    role: "Clinical Lead Nurse",
     image: "/david.jpg",
   },
   {
     id: 3,
     quote:
-      "I was looking for a service that truly understood the complexities of learning disabilities. DAS exceeded expectations.",
-    name: "Emily R.",
-    role: "Guardian",
+      "Olajide's dedication to professional development and his role as an educator/trainer has significantly contributed to improving care standards. His emotional intelligence and clinical expertise are outstanding.",
+    name: "Emily Roberts, RN",
+    role: "Nurse Educator",
     image: "/emily.jpg",
   },
   {
     id: 4,
     quote:
-      "Knowing my nephew is in such capable and caring hands is a huge relief. Professional and compassionate care.",
-    name: "Robert K.",
-    role: "Client’s Uncle",
+      "As a colleague, I've always admired Olajide's kind and compassionate professional approach. His combination of clinical expertise and transformative leadership makes him an exceptional healthcare professional.",
+    name: "Robert King, RN",
+    role: "Senior Staff Nurse",
     image: "/robert.jpg",
   },
 ];
@@ -45,7 +45,7 @@ export default function TestimonialsFigma() {
       <div className="max-w-4xl w-full bg-gray-50 rounded-3xl shadow-sm p-8 md:p-10">
         {/* Heading */}
         <h2 className="text-center text-2xl md:text-3xl font-semibold text-gray-900 mb-8">
-          What Families Say About Us
+          What Our Colleagues Say About Us
         </h2>
 
         {/* Narrow testimonial cards (white) */}
