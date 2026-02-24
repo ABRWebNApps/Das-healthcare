@@ -120,7 +120,7 @@ const MeetOurTeam = () => {
     {
       name: "Olutoyin Bankole",
       role: "Co-Founder & Director",
-      image: "/Olutoyin Bankole.png", // Path relative to public folder
+      image: "/ladyprofilepic.jpeg", // Path relative to public folder
       shortBio:
         "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development.",
       bio: "BSc in Human Nutrition (currently pursuing MA in Social Work). Nearly two decades of experience in quality management and compliance, managing human and resources, team building and development. From humble beginnings as a volunteer support worker to Deputy Team Manager, she is well organised and motivated, consistently demonstrating empathy, and strategic leadership and exceptional care. Specialises in Qualities Management and Compliance, Team Building and Development.",
