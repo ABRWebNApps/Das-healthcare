@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "DAS Healthcare - Domiciliary Care Services",
   description:
     "Providing domiciliary care and support services to enhance the quality of life for individuals with diverse needs.",
+  icons: {
+    icon: "/newlogo.png",
+  },
 };
 
 export default function RootLayout({
