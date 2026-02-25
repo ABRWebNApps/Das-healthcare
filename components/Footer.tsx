@@ -106,17 +106,22 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Contact Info</h3>
             <ul className="space-y-3">
               <li className="text-gray-600">
-                9, Arcus Road, Bromley.
+                9, Arcus Road, Bromley, Kent, BR1 4NN, UK.
                 <br />
-                Kent BR1 4NN. <br />
                 Service Provider: Personal Care.
               </li>
-              <li>
+              <li className="flex flex-col gap-1">
                 <a
-                  href="tel:+442012345678"
+                  href="tel:02036216242"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
-                  +44 20 1234 5678
+                  02036216242
+                </a>
+                <a
+                  href="tel:07856914135"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Direct : 07856914135
                 </a>
               </li>
               <li>
