@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "https://dascareproviders.com"
   ),
   title: {
-    default: "DAS Healthcare | Premium Domiciliary Care Services",
-    template: "%s | DAS Healthcare",
+    default: "DAS Healthcare Providers - Domiciliary Care Services",
+    template: "%s | DAS Healthcare Providers - Domiciliary Care Services",
   },
   description:
     "Providing expert, personalized domiciliary care and home support services. We empower individuals with diverse needs to live comfortably and independently at home.",
@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     "elderly care",
     "healthcare providers",
     "in-home nursing",
-    "DAS Healthcare",
+    "DAS Healthcare Providers",
   ],
-  authors: [{ name: "DAS Healthcare" }],
-  creator: "DAS Healthcare",
-  publisher: "DAS Healthcare",
+  authors: [{ name: "DAS Healthcare Providers" }],
+  creator: "DAS Healthcare Providers",
+  publisher: "DAS Healthcare Providers",
   alternates: {
     canonical: "/",
   },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: "/",
     siteName: "DAS Healthcare Providers",
-    title: "DAS Healthcare | Home Care Services You Can Trust",
+    title: "DAS Healthcare Providers - Domiciliary Care Services",
     description:
       "Compassionate domiciliary care tailored to your unique needs. Helping you maintain independence in the comfort of your own home.",
     images: [
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "DAS Healthcare Providers",
+    title: "DAS Healthcare Providers - Domiciliary Care Services",
     description: "Expert home care and supported living services.",
     images: ["/newlogo.png"],
   },
