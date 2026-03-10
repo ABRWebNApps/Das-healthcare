@@ -3,7 +3,19 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Appointment } from "@/lib/supabase/types";
-import { Calendar, Check, X, Clock, User, Mail, Phone, Edit, Trash2, RotateCcw, CheckCircle } from "lucide-react";
+import {
+  Calendar,
+  Check,
+  X,
+  Clock,
+  User,
+  Mail,
+  Phone,
+  Edit,
+  Trash2,
+  RotateCcw,
+  CheckCircle,
+} from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 
@@ -11,9 +23,11 @@ export default function AppointmentsAdmin() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<Appointment | null>(null);
   const [notes, setNotes] = useState("");
-  const [rescheduleAppointment, setRescheduleAppointment] = useState<Appointment | null>(null);
+  const [rescheduleAppointment, setRescheduleAppointment] =
+    useState<Appointment | null>(null);
   const [newDate, setNewDate] = useState("");
   const [newTime, setNewTime] = useState("");
 
@@ -21,12 +35,13 @@ export default function AppointmentsAdmin() {
     try {
       setLoading(true);
       let query = supabase.from("appointments").select("*");
-      
+
       if (filter !== "all") {
         query = query.eq("status", filter);
       }
-      
-      query = query.order("appointment_date", { ascending: true });
+
+      // Order by created_at descending so newest bookings appear at the top
+      query = query.order("created_at", { ascending: false });
 
       const { data, error } = await query;
       if (error) throw error;
@@ -40,7 +55,7 @@ export default function AppointmentsAdmin() {
 
   useEffect(() => {
     fetchAppointments();
-    
+
     // Subscribe to real-time updates
     const channel = supabase
       .channel("appointments_changes")
@@ -66,6 +81,35 @@ export default function AppointmentsAdmin() {
         .eq("id", id);
 
       if (error) throw error;
+
+      // If the appointment is being confirmed, send the automated email
+      if (status === "confirmed") {
+        const appointment = appointments.find((apt) => apt.id === id);
+        if (appointment) {
+          try {
+            const res = await fetch("/api/email/appointment-confirmed", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(appointment),
+            });
+
+            if (!res.ok) {
+              console.error("Failed to send confirmation email");
+              alert(
+                "Appointment confirmed, but failed to send the confirmation email."
+              );
+            } else {
+              alert("Appointment confirmed and email sent successfully!");
+            }
+          } catch (emailError) {
+            console.error("Email API error:", emailError);
+            alert(
+              "Appointment confirmed, but an error occurred while sending the email."
+            );
+          }
+        }
+      }
+
       await fetchAppointments(); // Refresh the list
     } catch (error) {
       console.error("Error updating status:", error);
@@ -142,7 +186,10 @@ export default function AppointmentsAdmin() {
     if (!confirm("Are you sure you want to delete this appointment?")) return;
 
     try {
-      const { error } = await supabase.from("appointments").delete().eq("id", id);
+      const { error } = await supabase
+        .from("appointments")
+        .delete()
+        .eq("id", id);
       if (error) throw error;
       setAppointments(appointments.filter((apt) => apt.id !== id));
     } catch (error) {
@@ -172,29 +219,38 @@ export default function AppointmentsAdmin() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
         <div className="flex gap-2">
-          {["all", "pending", "confirmed", "rescheduled", "cancelled", "completed"].map(
-            (status) => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  filter === status
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </button>
-            )
-          )}
+          {[
+            "all",
+            "pending",
+            "confirmed",
+            "rescheduled",
+            "cancelled",
+            "completed",
+          ].map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilter(status)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                filter === status
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
         </div>
       </div>
 
       {appointments.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
           <Calendar className="mx-auto mb-4 text-gray-400" size={48} />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No appointments</h3>
-          <p className="text-gray-600">No appointments found for the selected filter.</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            No appointments
+          </h3>
+          <p className="text-gray-600">
+            No appointments found for the selected filter.
+          </p>
         </div>
       ) : (
         <div className="grid gap-4">
@@ -208,7 +264,9 @@ export default function AppointmentsAdmin() {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-xl font-semibold text-gray-900">{apt.client_name}</h3>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {apt.client_name}
+                    </h3>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         statusColors[apt.status]
@@ -230,8 +288,8 @@ export default function AppointmentsAdmin() {
                     <div className="flex items-center gap-2 text-gray-600">
                       <Calendar size={18} />
                       <span>
-                        {format(new Date(apt.appointment_date), "MMM dd, yyyy")} at{" "}
-                        {apt.appointment_time}
+                        {format(new Date(apt.appointment_date), "MMM dd, yyyy")}{" "}
+                        at {apt.appointment_time}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-600">
@@ -241,20 +299,26 @@ export default function AppointmentsAdmin() {
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-sm font-medium text-gray-700 mb-1">Subject:</p>
+                    <p className="text-sm font-medium text-gray-700 mb-1">
+                      Subject:
+                    </p>
                     <p className="text-gray-600">{apt.subject}</p>
                   </div>
 
                   {apt.reason && (
                     <div className="mb-4">
-                      <p className="text-sm font-medium text-gray-700 mb-1">Reason:</p>
+                      <p className="text-sm font-medium text-gray-700 mb-1">
+                        Reason:
+                      </p>
                       <p className="text-gray-600">{apt.reason}</p>
                     </div>
                   )}
 
                   {apt.notes && (
                     <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm font-medium text-gray-700 mb-1">Notes:</p>
+                      <p className="text-sm font-medium text-gray-700 mb-1">
+                        Notes:
+                      </p>
                       <p className="text-gray-600 text-sm">{apt.notes}</p>
                     </div>
                   )}
@@ -395,24 +459,35 @@ export default function AppointmentsAdmin() {
       {rescheduleAppointment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Reschedule Appointment</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              Reschedule Appointment
+            </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Current: {format(new Date(rescheduleAppointment.appointment_date), "MMM dd, yyyy")} at {rescheduleAppointment.appointment_time}
+              Current:{" "}
+              {format(
+                new Date(rescheduleAppointment.appointment_date),
+                "MMM dd, yyyy"
+              )}{" "}
+              at {rescheduleAppointment.appointment_time}
             </p>
-            
+
             <div className="space-y-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">New Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  New Date
+                </label>
                 <input
                   type="date"
                   value={newDate}
                   onChange={(e) => setNewDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
+                  min={new Date().toISOString().split("T")[0]}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">New Time</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  New Time
+                </label>
                 <input
                   type="time"
                   value={newTime}
@@ -421,7 +496,7 @@ export default function AppointmentsAdmin() {
                 />
               </div>
             </div>
-            
+
             <div className="flex gap-3">
               <button
                 onClick={() => {
@@ -446,4 +521,3 @@ export default function AppointmentsAdmin() {
     </div>
   );
 }
-

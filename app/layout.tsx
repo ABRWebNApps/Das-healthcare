@@ -15,11 +15,60 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DAS Healthcare - Domiciliary Care Services",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://dascareproviders.com"
+  ),
+  title: {
+    default: "DAS Healthcare | Premium Domiciliary Care Services",
+    template: "%s | DAS Healthcare",
+  },
   description:
-    "Providing domiciliary care and support services to enhance the quality of life for individuals with diverse needs.",
+    "Providing expert, personalized domiciliary care and home support services. We empower individuals with diverse needs to live comfortably and independently at home.",
+  keywords: [
+    "domiciliary care",
+    "home care services",
+    "supported living",
+    "elderly care",
+    "healthcare providers",
+    "in-home nursing",
+    "DAS Healthcare",
+  ],
+  authors: [{ name: "DAS Healthcare" }],
+  creator: "DAS Healthcare",
+  publisher: "DAS Healthcare",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "/",
+    siteName: "DAS Healthcare Providers",
+    title: "DAS Healthcare | Home Care Services You Can Trust",
+    description:
+      "Compassionate domiciliary care tailored to your unique needs. Helping you maintain independence in the comfort of your own home.",
+    images: [
+      {
+        url: "/newlogo.png",
+        width: 800,
+        height: 600,
+        alt: "DAS Healthcare Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DAS Healthcare Providers",
+    description: "Expert home care and supported living services.",
+    images: ["/newlogo.png"],
+  },
   icons: {
     icon: "/newlogo.png",
+    apple: "/newlogo.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

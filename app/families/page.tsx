@@ -2,6 +2,13 @@ import Navbar from "@/components/Navigation";
 import FamiliesHero from "@/components/FamiliesHero";
 import Commitment from "@/components/Commitment";
 import RegisteredAndTrusted from "@/components/Registered";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "For Families | Peace of Mind",
+  description:
+    "Discover how DAS Healthcare provides peace of mind for families through expert care, transparent communication, and dedicated support for your loved ones.",
+};
 
 export default function FamiliesPage() {
   return (

@@ -6,6 +6,14 @@ import Team from "@/components/Team";
 import Trusted from "@/components/Trusted";
 import Ready from "@/components/Ready";
 import JobListings from "@/components/JobListings";
+import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Careers & Jobs",
+  description:
+    "Join the DAS Healthcare team. Browse our current job openings and start a rewarding career in domiciliary care and supported living.",
+};
 
 export default function CareersPage() {
   return (
