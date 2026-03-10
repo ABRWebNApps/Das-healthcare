@@ -6,35 +6,31 @@ import { motion } from "framer-motion";
 const testimonials = [
   {
     id: 1,
-    quote:
-      "Olajide's exceptional clinical expertise and compassionate leadership have consistently set high standards in healthcare delivery. His transformative approach to nursing leadership is truly inspiring.",
-    name: "Thomas Taylor, RN",
-    role: "Senior Nurse Practitioner",
-    image: "/Thomas.jpg",
+    quote: "Jide Bankole is an exceptional nurse and educator who demonstrated outstanding professionalism and dedication during our time working together in Botswana during the COVID-19 pandemic. His expertise, compassion, and ability to educate others made a significant impact on our team.",
+    name: "Rejoice Gbologah",
+    role: "Critical Care Nurse, Ghana",
+    image: "/Client-1.jpg",
   },
   {
     id: 2,
-    quote:
-      "Having worked with Olajide across multiple healthcare settings, I've witnessed his strategic vision and problem-solving abilities firsthand. His regulatory knowledge and communication skills are exemplary.",
-    name: "David Lawson, RN",
-    role: "Clinical Lead Nurse",
-    image: "/david.jpg",
+    quote: "I would like to acknowledge my colleague Jide for his consistent professionalism, teamwork, and dedication. He always communicate clearly, support the team when needed and is an outstanding nurse. His reliability and positive attitude makes a meaningful contribution to work environment. I have always enjoyed working with him.",
+    name: "Agnes Stansfeld",
+    role: "RN, ITU Nurse, London, UK",
+    image: "/Client-2.jpg",
   },
   {
     id: 3,
-    quote:
-      "Olajide's dedication to professional development and his role as an educator/trainer has significantly contributed to improving care standards. His emotional intelligence and clinical expertise are outstanding.",
-    name: "Emily Roberts, RN",
-    role: "Nurse Educator",
-    image: "/emily.jpg",
+    quote: "I had the privilege of working with Olutoyin when she served as a deputy manager in a domiciliary care service in Leeds, working closely alongside the registered manager. She consistently demonstrated exceptional leadership and a deep commitment to high-quality, person-centred care. I witnessed her bring tender, thoughtful support to our care-at-home services, always striving to ensure that people receiving care felt safe, valued, and happy in the comfort of their own homes. She is hands-on, compassionate, and leads by example, whether supporting clients and their families or managing the wider team. Her humility, dedication, and genuine heart for service make her a standout leader and an asset to any organisation.",
+    name: "Christy A.",
+    role: "Colleague",
+    image: "/Client-3.jpg",
   },
   {
     id: 4,
-    quote:
-      "As a colleague, I've always admired Olajide's kind and compassionate professional approach. His combination of clinical expertise and transformative leadership makes him an exceptional healthcare professional.",
-    name: "Robert King, RN",
-    role: "Senior Staff Nurse",
-    image: "/robert.jpg",
+    quote: "All through the time I worked with Olutoyin as a deputy manager in residential support care, she proved to be an outstanding leader and support worker. She brought a level of tenderness, empathy, and professionalism that deeply impacted both residents and staff. Her leadership style is grounded in compassion and active involvement, always prioritising the needs of those in her care. Olutoyin’s dedication, humility, and ability to inspire others truly set her apart.",
+    name: "Leslie S.",
+    role: "Colleague",
+    image: "/Client-4.jpg",
   },
 ];
 

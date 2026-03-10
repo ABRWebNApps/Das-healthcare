@@ -14,30 +14,30 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      '"Having worked alongside Olajide for over 15 years in critical care, I can attest to his exceptional clinical expertise and compassionate leadership. His dedication to patient care and professional development is truly inspiring."',
-    name: "Dr. Sarah Mitchell",
-    role: "Senior Consultant, NHS",
+      '"Jide Bankole is an exceptional nurse and educator who demonstrated outstanding professionalism and dedication during our time working together in Botswana during the COVID-19 pandemic. His expertise, compassion, and ability to educate others made a significant impact on our team."',
+    name: "Rejoice Gbologah",
+    role: "Critical Care Nurse, Ghana",
     avatar: "/Client-1.jpg",
   },
   {
     quote:
-      '"Olajide\'s transformative leadership and strategic vision have been instrumental in improving care standards. His ability to mentor and develop nursing teams while maintaining the highest clinical standards is remarkable."',
-    name: "Dr. David Lawson",
-    role: "Clinical Director, Private Healthcare",
+      '"I would like to acknowledge my colleague Jide for his consistent professionalism, teamwork, and dedication. He always communicate clearly, support the team when needed and is an outstanding nurse. His reliability and positive attitude makes a meaningful contribution to work environment. I have always enjoyed working with him."',
+    name: "Agnes Stansfeld",
+    role: "RN, ITU Nurse, London, UK",
     avatar: "/Client-2.jpg",
   },
   {
     quote:
-      '"Working with Olajide during the COVID-19 response in Botswana was a privilege. His problem-solving skills, regulatory knowledge, and emotional intelligence make him an outstanding healthcare professional and leader."',
-    name: "Dr. Maria Patel",
-    role: "WHO Consultant",
+      '"I had the privilege of working with Olutoyin when she served as a deputy manager in a domiciliary care service in Leeds, working closely alongside the registered manager. She consistently demonstrated exceptional leadership and a deep commitment to high-quality, person-centred care. I witnessed her bring tender, thoughtful support to our care-at-home services, always striving to ensure that people receiving care felt safe, valued, and happy in the comfort of their own homes. She is hands-on, compassionate, and leads by example, whether supporting clients and their families or managing the wider team. Her humility, dedication, and genuine heart for service make her a standout leader and an asset to any organisation."',
+    name: "Christy A.",
+    role: "Colleague",
     avatar: "/Client-3.jpg",
   },
   {
     quote:
-      '"As a fellow RN, I\'ve witnessed Olajide\'s commitment to excellence in nursing practice. His clinical expertise combined with his compassionate approach and excellent communication skills sets a benchmark for quality care."',
-    name: "Emily Roberts, RN",
-    role: "Senior Nurse Practitioner",
+      '"All through the time I worked with Olutoyin as a deputy manager in residential support care, she proved to be an outstanding leader and support worker. She brought a level of tenderness, empathy, and professionalism that deeply impacted both residents and staff. Her leadership style is grounded in compassion and active involvement, always prioritising the needs of those in her care. Olutoyin’s dedication, humility, and ability to inspire others truly set her apart."',
+    name: "Leslie S.",
+    role: "Colleague",
     avatar: "/Client-4.jpg",
   },
 ];
