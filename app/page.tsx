@@ -8,7 +8,7 @@ import Script from "next/script";
 export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "MedicalOrganization", "Organization"],
     name: "DAS Healthcare Providers",
     image: "https://dascareproviders.com/newlogo.png",
     "@id": "https://dascareproviders.com",
@@ -46,6 +46,31 @@ export default function Home() {
     ],
     priceRange: "$$",
     description: "Expert domiciliary care and supported living services in Kent and surrounding areas.",
+    sameAs: [
+      "https://www.facebook.com/dascareproviders",
+      "https://www.instagram.com/dascareproviders",
+      "https://www.linkedin.com/company/dascareproviders"
+    ],
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Kent and surrounding boroughs"
+    },
+    makesOffer: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Domiciliary Care"
+        }
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Supported Living"
+        }
+      }
+    ]
   };
 
   return (

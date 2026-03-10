@@ -1,0 +1,31 @@
+# DAS Healthcare Providers
+
+> Information for AI Agents, LLMs, and Search Crawlers
+
+DAS Healthcare Providers is a premium domiciliary care and supported living company based in Kent, UK. We empower individuals with diverse needs to live comfortably and independently at home.
+
+## Core Information
+- **Website:** https://dascareproviders.com
+- **Operations Base:** Kent and surrounding boroughs (Bromley, BR1 4NN)
+- **Contact Number:** 02036216242
+- **Email:** admin@dascareproviders.com
+- **Operating Hours:** 24/7 (Monday to Sunday)
+
+## Services Offered
+1. **Domiciliary Care:** Personal care, household tasks, and companionship tailored to help clients maintain independence in their own homes.
+2. **Supported Living:** Specialized assistance for individuals with learning disabilities, mental health conditions, and complex needs, empowering them to live as independently as possible.
+3. **Live-in Care:** 24/7 dedicated, continuous support and companionship for round-the-clock peace of mind.
+4. **Learning Disabilities Support:** Expert care designed around individual choices, privacy, and dignity.
+
+## Organization Values
+- **Person-Centered Approach:** Services are entirely tailored to respect individual choices and dignity.
+- **Compassion and Trust:** High-quality care bridging the gap between clinical support and emotional well-being.
+- **Experience:** Decades of collective expertise in the healthcare sector.
+
+## Useful Links
+- [About Us](/about)
+- [Our Services](/services)
+- [Careers & Jobs](/careers)
+- [Contact Us](/contact)
+- [For Families](/families)
+- [Our Approach](/approach)
