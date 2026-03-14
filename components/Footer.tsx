@@ -35,14 +35,18 @@ export default function Footer() {
             </p>
             <div className="flex items-center space-x-6 mb-6">
               <a
-                href="#"
+                href="https://facebook.com/DASHealthcareP"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-600 transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="w-6 h-6" />
               </a>
               <a
-                href="#"
+                href="https://x.com/DASHealthcareP"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-600 hover:text-blue-400 transition-colors"
                 aria-label="X"
               >

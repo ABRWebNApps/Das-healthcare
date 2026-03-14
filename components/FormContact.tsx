@@ -293,9 +293,15 @@ export default function ContactForm() {
           </div>
           <p className="text-gray-700 font-semibold mt-6">Follow Us On</p>
           <div className="flex gap-4 items-center text-blue-600">
-            <Facebook size={22} />
-            <Instagram size={22} />
-            <SiX size={22} />
+            <a href="https://facebook.com/DASHealthcareP" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <Facebook size={22} className="hover:text-blue-800 transition-colors" />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <Instagram size={22} className="hover:text-pink-600 transition-colors" />
+            </a>
+            <a href="https://x.com/DASHealthcareP" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <SiX size={22} className="hover:text-black transition-colors" />
+            </a>
           </div>
         </motion.div>
       </div>

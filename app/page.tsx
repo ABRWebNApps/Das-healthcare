@@ -47,9 +47,9 @@ export default function Home() {
     priceRange: "$$",
     description: "Expert domiciliary care and supported living services in Kent and surrounding areas.",
     sameAs: [
-      "https://www.facebook.com/dascareproviders",
+      "https://facebook.com/DASHealthcareP",
       "https://www.instagram.com/dascareproviders",
-      "https://www.linkedin.com/company/dascareproviders"
+      "https://x.com/DASHealthcareP"
     ],
     areaServed: {
       "@type": "AdministrativeArea",
