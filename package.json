@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@getbrevo/brevo": "^4.0.1",
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.84.0",
@@ -20,11 +19,11 @@
     "framer-motion": "^12.34.3",
     "lucide-react": "^0.546.0",
     "next": "^16.1.6",
-    "nodemailer": "^8.0.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "react-textarea-autosize": "^8.5.9",
+    "resend": "^6.9.4",
     "styled-components": "^6.1.19",
     "swiper": "^12.1.2",
     "tailwind-merge": "^3.3.1"

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { format } from "date-fns";
+import { Resend } from "resend";
 
 export async function POST(request: Request) {
   try {
@@ -24,13 +25,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.BREVO_API_KEY;
-    if (!apiKey) {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) {
       return NextResponse.json(
-        { message: "Brevo API key not configured" },
+        { message: "Resend API key not configured" },
         { status: 500 }
       );
     }
+
+    const resend = new Resend(resendApiKey);
 
     const formattedDate = format(
       new Date(appointment_date),
@@ -151,38 +154,24 @@ export async function POST(request: Request) {
 </html>
     `;
 
-    // Use Brevo's REST API via fetch (not SMTP — no firewall issues)
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "api-key": apiKey,
-      },
-      body: JSON.stringify({
-        sender: {
-          name: "DAS Healthcare",
-          email: process.env.SMTP_FROM_EMAIL || "admin@dascareproviders.com",
-        },
-        to: [{ email: client_email, name: client_name }],
-        subject: "Your Appointment is Confirmed – DAS Healthcare",
-        htmlContent,
-      }),
+    const { data, error } = await resend.emails.send({
+      from: `DAS Healthcare <${process.env.SMTP_FROM_EMAIL || "admin@dascareproviders.com"}>`,
+      to: [client_email],
+      subject: "Your Appointment is Confirmed – DAS Healthcare",
+      html: htmlContent,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Brevo API Error:", errorData);
+    if (error) {
+      console.error("Resend API Error:", error);
       return NextResponse.json(
-        { message: "Failed to send email via Brevo", error: errorData },
+        { message: "Failed to send email via Resend", error },
         { status: 500 }
       );
     }
 
-    const result = await response.json();
-    console.log("Confirmation email sent via Brevo API:", result.messageId);
+    console.log("Confirmation email sent via Resend:", data?.id);
     return NextResponse.json(
-      { success: true, messageId: result.messageId },
+      { success: true, messageId: data?.id },
       { status: 200 }
     );
   } catch (error: any) {

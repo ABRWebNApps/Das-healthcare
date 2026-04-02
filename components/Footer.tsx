@@ -64,6 +64,12 @@ export default function Footer() {
               © {new Date().getFullYear()} DAS Healthcare Providers. All rights
               reserved.
             </p>
+            <Link
+              href="/privacy-policy"
+              className="text-blue-600 hover:text-blue-800 text-xs mt-1 underline underline-offset-2 transition-colors"
+            >
+              Privacy Policy
+            </Link>
           </div>
 
           {/* Quick Links */}
@@ -100,6 +106,14 @@ export default function Footer() {
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Careers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Privacy Policy
                 </Link>
               </li>
             </ul>
