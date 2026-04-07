@@ -38,7 +38,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
       className="w-full sm:w-1/2 lg:w-1/3 px-3 mb-6"
     >
       <div className="bg-white rounded-lg shadow-lg overflow-hidden mx-auto w-full max-w-[280px]">
-        <div className="relative w-full aspect-[3/4] bg-white pb-0">
+        <div className="relative w-full aspect-[4/5] bg-gray-50 pb-0">
           {imageLoading && !imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
               <div className="animate-pulse text-gray-400 text-xs">
@@ -52,11 +52,9 @@ const TeamMember: React.FC<TeamMemberProps> = ({
               src={image.startsWith("/") ? image : `/${image}`} // Ensure path starts with /
               alt={name}
               fill
-              style={{
-                objectFit: image.includes("ladyprofilepic") ? "contain" : "cover",
-                objectPosition: "top center",
-                transform: image.includes("olajide") ? "scale(1.15) translateY(-4%)" : "scale(0.9) translateY(4%)",
-              }}
+              className={`w-full h-full object-cover ${
+                image.includes("ladyprofilepic") ? "object-top" : "object-[center_10%]"
+              }`}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={() => {
                 setImageError(true);
