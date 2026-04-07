@@ -1,7 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
 export default function Voice() {
 	 const router = useRouter();
 	
@@ -10,8 +12,20 @@ export default function Voice() {
 				<div className="max-w-[980px] mx-auto">
 				<h2 className="text-center text-2xl md:text-3xl font-semibold text-[#111827] mb-8">Voices of Our Colleagues</h2>
 
-				{/* Testimonials row */}
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+				{/* Testimonials Auto-sliding Carousel */}
+			<div className="mb-12">
+					<Swiper
+						modules={[Autoplay]}
+						spaceBetween={24}
+						slidesPerView={1}
+						breakpoints={{
+							640: { slidesPerView: 1 },
+							768: { slidesPerView: 2 },
+							1024: { slidesPerView: 3 },
+						}}
+						autoplay={{ delay: 6000, disableOnInteraction: false }}
+						className="pb-4"
+					>
 					{[
 						{
 							img: "/Rejoice - T.jfif.jpeg",
@@ -42,19 +56,19 @@ export default function Voice() {
 							role: "Colleague",
 						},
 					].map((t, i) => (
-									<figure
-										key={i}
-										className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-gray-100"
-									>
-							<div className="flex items-start gap-3">
-								<div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-gray-100">
-									<Image src={t.img} alt={t.name} width={40} height={40} className="object-cover" />
-								</div>
-								<blockquote className="text-[14px] text-gray-700 italic">{t.quote}</blockquote>
-							</div>
-							<figcaption className="mt-4 text-[13px] text-gray-500">{t.name} · <span className="text-gray-400">{t.role}</span></figcaption>
-						</figure>
+									<SwiperSlide key={i} className="h-auto">
+										<figure className="bg-white rounded-xl p-6 shadow-sm border border-transparent hover:border-gray-100 flex flex-col h-full cursor-grab active:cursor-grabbing">
+											<div className="flex items-start gap-3 flex-1 mb-4">
+												<div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-gray-100">
+													<Image src={t.img} alt={t.name} width={40} height={40} className="object-cover" />
+												</div>
+												<blockquote className="text-[14px] text-gray-700 italic leading-relaxed">{t.quote}</blockquote>
+											</div>
+											<figcaption className="mt-auto text-[13px] text-gray-500 pl-13">{t.name} · <span className="text-gray-400">{t.role}</span></figcaption>
+										</figure>
+									</SwiperSlide>
 					))}
+					</Swiper>
 				</div>
 
 				{/* CTA card */}
