@@ -52,7 +52,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
               src={image.startsWith("/") ? image : `/${image}`} // Ensure path starts with /
               alt={name}
               fill
-              className="object-contain w-full"
+              className="object-cover object-top w-full h-full"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={() => {
                 setImageError(true);

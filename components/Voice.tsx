@@ -11,28 +11,35 @@ export default function Voice() {
 				<h2 className="text-center text-2xl md:text-3xl font-semibold text-[#111827] mb-8">Voices of Our Colleagues</h2>
 
 				{/* Testimonials row */}
-			<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 					{[
 						{
-							img: "/Client-1.jpg",
+							img: "/Rejoice - T.jfif.jpeg",
 							quote:
-								'"Olajide\'s exceptional clinical expertise and transformative leadership have consistently elevated care standards. His compassionate approach and strategic vision make him an outstanding healthcare professional."',
-							name: "Eleanor V., RN",
-							role: "Senior Clinical Nurse",
+								'"Jide Bankole is an exceptional nurse and educator who demonstrated outstanding professionalism and dedication during our time working together in Botswana during the COVID-19 pandemic. His expertise, compassion, and ability to educate others made a significant impact on our team."',
+							name: "Rejoice Gbologah",
+							role: "Critical Care Nurse, Ghana",
 						},
 						{
-							img: "/Client-2.jpg",
+							img: "/premium_profile_icon.png",
 							quote:
-								'"Having worked alongside Olajide for many years, I\'ve witnessed his problem-solving skills and regulatory knowledge firsthand. His dedication to professional development and clinical excellence is remarkable."',
-							name: "David S., RN",
-							role: "Nurse Manager",
+								'"I would like to acknowledge my colleague Jide for his consistent professionalism, teamwork, and dedication. He always communicate clearly, support the team when needed and is an outstanding nurse. His reliability and positive attitude makes a meaningful contribution to work environment. I have always enjoyed working with him."',
+							name: "Agnes Stansfeld",
+							role: "RN, ITU Nurse, London, UK",
 						},
 						{
-							img: "/Client-3.jpg",
+							img: "/premium_profile_icon.png",
 							quote:
-								'"Olajide\'s role as an educator and trainer has significantly contributed to improving nursing practice. His emotional intelligence, excellent communication skills, and kind professional approach are exemplary."',
-							name: "Sophia L., RN",
-							role: "Clinical Educator",
+								'"I had the privilege of working with Olutoyin when she served as a deputy manager in a domiciliary care service in Leeds, working closely alongside the registered manager. She consistently demonstrated exceptional leadership and a deep commitment to high-quality, person-centred care. I witnessed her bring tender, thoughtful support to our care-at-home services, always striving to ensure that people receiving care felt safe, valued, and happy in the comfort of their own homes. She is hands-on, compassionate, and leads by example, whether supporting clients and their families or managing the wider team. Her humility, dedication, and genuine heart for service make her a standout leader and an asset to any organisation."',
+							name: "Christy A.",
+							role: "Colleague",
+						},
+						{
+							img: "/premium_profile_icon.png",
+							quote:
+								'"All through the time I worked with Olutoyin as a deputy manager in residential support care, she proved to be an outstanding leader and support worker. She brought a level of tenderness, empathy, and professionalism that deeply impacted both residents and staff. Her leadership style is grounded in compassion and active involvement, always prioritising the needs of those in her care. Olutoyin’s dedication, humility, and ability to inspire others truly set her apart."',
+							name: "Leslie S.",
+							role: "Colleague",
 						},
 					].map((t, i) => (
 									<figure
