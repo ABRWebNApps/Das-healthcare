@@ -88,9 +88,36 @@ export default function MessagesAdmin() {
 
       if (error) throw error;
 
-      // Here you would typically send an email with the response
-      // For now, we'll just update the status
-      alert("Response saved! (Email sending would be implemented here)");
+      // Send the email response notification via Resend
+      const messageToReply = messages.find((msg) => msg.id === id);
+      if (messageToReply) {
+        try {
+          const res = await fetch("/api/email/message-reply", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: messageToReply.name,
+              email: messageToReply.email,
+              message: messageToReply.message,
+              response: response,
+            }),
+          });
+
+          if (!res.ok) {
+            console.error("Failed to send reply email via Resend");
+            alert(
+              "Response saved, but failed to send the email notification."
+            );
+          } else {
+            alert("Response saved and email sent successfully!");
+          }
+        } catch (emailError) {
+          console.error("Email API error:", emailError);
+          alert(
+            "Response saved, but an error occurred while sending the email."
+          );
+        }
+      }
 
       setMessages(
         messages.map((msg) =>

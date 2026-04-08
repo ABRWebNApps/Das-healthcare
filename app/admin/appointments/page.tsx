@@ -135,6 +135,34 @@ export default function AppointmentsAdmin() {
         .eq("id", rescheduleAppointment.id);
 
       if (error) throw error;
+
+      // Send the reschedule email notification
+      try {
+        const res = await fetch("/api/email/appointment-rescheduled", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...rescheduleAppointment,
+            appointment_date: newDate,
+            appointment_time: newTime,
+          }),
+        });
+
+        if (!res.ok) {
+          console.error("Failed to send reschedule email");
+          alert(
+            "Appointment rescheduled, but failed to send the email notification."
+          );
+        } else {
+          alert("Appointment rescheduled and email sent successfully!");
+        }
+      } catch (emailError) {
+        console.error("Email API error:", emailError);
+        alert(
+          "Appointment rescheduled, but an error occurred while sending the email."
+        );
+      }
+
       setRescheduleAppointment(null);
       setNewDate("");
       setNewTime("");
