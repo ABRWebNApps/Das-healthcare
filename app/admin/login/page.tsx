@@ -91,14 +91,7 @@ export default function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </button>
 
-          <div className="text-center">
-            <Link
-              href="/admin/signup"
-              className="text-sm text-blue-600 hover:text-blue-700"
-            >
-              Don't have an account? Sign up
-            </Link>
-          </div>
+
         </form>
       </motion.div>
     </div>
