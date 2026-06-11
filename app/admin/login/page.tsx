@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -90,7 +89,6 @@ export default function AdminLogin() {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
-
 
         </form>
       </motion.div>

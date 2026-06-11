@@ -60,7 +60,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
                 setImageError(true);
                 setImageLoading(false);
               }}
-              onLoadingComplete={() => setImageLoading(false)}
+              onLoad={() => setImageLoading(false)}
               priority
             />
           ) : (
@@ -114,7 +114,7 @@ const MeetOurTeam = () => {
     {
       name: "Olajide Bankole, RN, DHM",
       role: "Co-Founder, Director of Care & Registered Manager, DAS Healthcare Providers Ltd",
-      image: "olajide-bankole.png", // Path relative to public folder
+      image: "olajide-bankole.jpg", // Updated photo
       shortBio:
         "Olajide Bankole RN is a highly accomplished Nurse Leader with over 30 years of experience in NHS, private hospitals, and international healthcare settings. As a WHO Nurse Consultant for COVID-19 response in Botswana (2021), he led emergency and critical care initiatives, driving quality improvements and healthcare innovation.",
       bio: "With expertise in strategic leadership, clinical governance, and education, he has held senior roles in Nigeria and the UK, including Director of Care and CQC Registered Manager for domiciliary care services. A skilled communicator and mentor, Olajide is committed to empowering healthcare teams and delivering exceptional patient care. His educational background includes qualifications from King's College London, Edinburgh Napier University, University of Oxford, Olabisi Onabanjo University, Ago-Iwoye, Ogun state Nigeria and Lagos State School of Nursing Lagos, Nigeria. Dedicated to giving back, he serves his communities through voluntary work and trusteeship roles, both locally and internationally, demonstrating his passion for healthcare excellence and social responsibility.",
