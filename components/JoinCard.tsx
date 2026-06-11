@@ -13,7 +13,7 @@ const JoinOurTeamCard: React.FC<JoinOurTeamCardProps> = () => {
 
   // For Apply Now button
   const handleApplyNow = () => {
-    router.push('/apply-for-job');
+    router.push('/careers');
   };
 
   return (
