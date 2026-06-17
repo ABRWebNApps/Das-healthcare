@@ -112,7 +112,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({
 const MeetOurTeam = () => {
   const teamMembers = [
     {
-      name: "Olajide Bankole, RN, DHM",
+      name: "Olajide Bankole, RN, DHM, MIHSCM",
       role: "Co-Founder, Director of Care & Registered Manager, DAS Healthcare Providers Ltd",
       image: "olajide-bankole.jpg", // Updated photo
       shortBio:
